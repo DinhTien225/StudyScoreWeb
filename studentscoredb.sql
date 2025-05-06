@@ -29,7 +29,8 @@ CREATE TABLE subject (
     subject_code VARCHAR(50) UNIQUE NOT NULL,
     subject_name VARCHAR(255) NOT NULL,
     description TEXT, -- Thêm mô tả môn học
-    credits INT DEFAULT 3
+    credits INT DEFAULT 3,
+    image_url VARCHAR(500)
 );
 
 -- Bảng Class_Subjects: môn học gán cho lớp
@@ -90,7 +91,7 @@ VALUES
 -- Insert vào Users (2 admin, 2 giảng viên, 5 sinh viên)
 INSERT INTO user (first_name,last_name, email, password, role, avatar_url, student_code, lecturer_code, class_id)
 VALUES 
-('Nguyen Van', 'A', 'admin1@university.edu.vn', 'hashedpassword', 'admin', NULL, NULL, NULL, NULL),
+('Nguyen Van', 'A', 'A.NguyenVan@ou.edu.vn', '$2a$10$5X9k5N1sTc1/CjVH5XJoje3QMYijH3ETpgkox00R0MdPaJPPrf7wO', 'admin', NULL, NULL, NULL, NULL),
 ('Tran Thi', 'B', 'admin2@university.edu.vn', 'hashedpassword', 'admin', NULL, NULL, NULL, NULL),
 ('Le Van', 'C', 'lecturer1@university.edu.vn', 'hashedpassword', 'lecturer', NULL, NULL, 'GV001', NULL),
 ('Pham Thi', 'D', 'lecturer2@university.edu.vn', 'hashedpassword', 'lecturer', NULL, NULL, 'GV002', NULL),
@@ -101,11 +102,11 @@ VALUES
 ('Student', 'One', 'sv5@student.university.edu.vn', 'hashedpassword', 'student', NULL, 'SV005', NULL, 2);
 
 -- Insert vào Subjects
-INSERT INTO subject (subject_code, subject_name, description, credits)
+INSERT INTO subject (subject_code, subject_name, description, credits,image_url)
 VALUES 
-('CT101', 'Cấu trúc dữ liệu', 'Học về cây, danh sách, đồ thị và thuật toán.', 3),
-('CN202', 'Mạng máy tính', 'Kiến thức căn bản về hệ thống mạng.', 3),
-('LT303', 'Lập trình hướng đối tượng', 'Lập trình Java, thiết kế OOP.', 4);
+('CT101', 'Cấu trúc dữ liệu', 'Học về cây, danh sách, đồ thị và thuật toán.', 3,'https://res.cloudinary.com/dq5ajyj0q/image/upload/v1746280157/lo-trinh-hoc-cau-truc-du-lieu-va-giai-thuat-phan-2-63723261114.6884_g5jx3u.jpg'),
+('CN202', 'Mạng máy tính', 'Kiến thức căn bản về hệ thống mạng.', 3,'https://res.cloudinary.com/dq5ajyj0q/image/upload/v1746280116/mang-may-tinh-1_8c9106c5577f4ddb90c8a387203096b9_grande_ix4q11.jpg'),
+('LT303', 'Lập trình hướng đối tượng', 'Lập trình Java, thiết kế OOP.', 4,'https://res.cloudinary.com/dq5ajyj0q/image/upload/v1746280233/1692946617-KYWcedi_ini1fr.jpg');
 
 -- Gán môn cho lớp
 INSERT INTO class_subject (class_id, subject_id)

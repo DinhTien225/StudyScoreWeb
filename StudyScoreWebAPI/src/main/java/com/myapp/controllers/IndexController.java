@@ -4,19 +4,37 @@
  */
 package com.myapp.controllers;
 
+import com.myapp.services.ClassService;
+import com.myapp.services.SubjectService;
+import java.util.Map;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  *
  * @author ADMIN
  */
 @Controller
+@ControllerAdvice
 public class IndexController {
+    @Autowired
+    private ClassService classService;
+    @Autowired
+    private SubjectService subService;
+    
+    @ModelAttribute
+    public void commonResponse(Model model, @RequestParam Map<String, String> params) {
+        model.addAttribute("subjects", this.subService.getSubjects(params));
+    }
+    
     @RequestMapping("/")
-    public String index(Model model){
-        model.addAttribute("msg","chào");
+    public String index(Model model, @RequestParam Map<String, String> params){
+        model.addAttribute("classes",this.classService.getClasses(params));
         return "index";
     }
 }
