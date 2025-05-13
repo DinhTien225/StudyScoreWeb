@@ -17,6 +17,5 @@ public interface SubjectService {
     List<Subject> getSubjects(Map<String, String> params);
     Subject getSubjectById(int id);
     Subject addOrUpdateSubject(Subject s);
-    boolean hasRole(String email, String role);
     void deleleSubject(int id);
 }

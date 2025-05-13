@@ -7,9 +7,7 @@ package com.myapp.services.impl;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.myapp.pojo.Subject;
-import com.myapp.pojo.User;
 import com.myapp.repositories.SubjectRepository;
-import com.myapp.repositories.UserRepository;
 import com.myapp.services.SubjectService;
 import java.io.IOException;
 import java.util.List;
@@ -28,8 +26,6 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Autowired
     private SubjectRepository subRepo;
-    @Autowired
-    private UserRepository userRepo;
     @Autowired
     private Cloudinary cloudinary;
 
@@ -57,12 +53,6 @@ public class SubjectServiceImpl implements SubjectService {
         }
 
         return this.subRepo.addOrUpdateSubject(s);
-    }
-
-    @Override
-    public boolean hasRole(String email, String role) {
-        User u = userRepo.getUserByEmail(email);
-        return u != null && u.getRole().equals(role);
     }
 
     @Override

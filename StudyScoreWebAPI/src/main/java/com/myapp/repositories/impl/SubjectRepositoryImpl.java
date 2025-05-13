@@ -45,7 +45,7 @@ public class SubjectRepositoryImpl implements SubjectRepository {
             List<Predicate> predicates = new ArrayList<>();
 
             // Tìm kiếm theo tên môn học nếu có
-            String name = params.get("name");
+            String name = params.get("keyword");
             if (name != null && !name.isEmpty()) {
                 predicates.add(b.like(b.lower(root.get("subjectName")), "%" + name.toLowerCase() + "%"));
             }
