@@ -14,4 +14,8 @@ import java.util.Map;
  */
 public interface ClassRepository {
     List<Class> getClasses(Map<String, String> params);
+    Class getClassById(int id);
+    Class addOrUpdateClass(Class c);
+    void deleleClass(int id);
+    long countClasses(Map<String, String> params);
 }

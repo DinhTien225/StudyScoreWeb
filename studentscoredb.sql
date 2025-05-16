@@ -1,9 +1,4 @@
--- Bảng Classes: quản lý lớp học
-CREATE TABLE class (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+
 
 -- Bảng Users: lưu thông tin tài khoản
 CREATE TABLE user (
@@ -16,13 +11,20 @@ CREATE TABLE user (
     avatar_url VARCHAR(500),
     student_code VARCHAR(50),
     lecturer_code VARCHAR(50),
-    class_id INT, -- Một sinh viên thuộc 1 lớp (nếu là sinh viên)
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    `active` bit(1) DEFAULT b'1',
-    FOREIGN KEY (class_id) REFERENCES class(id)
+    class_id INT, 
+    `active` bit(1) DEFAULT b'1'
 );
-
+-- Bảng Classes: quản lý lớp học
+CREATE TABLE class (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    code VARCHAR(50) UNIQUE NOT NULL,
+    lecturer_id INT,
+    FOREIGN KEY (lecturer_id) REFERENCES user(id)
+);
+ALTER TABLE user
+ADD CONSTRAINT fk_user_class
+FOREIGN KEY (class_id) REFERENCES class(id);
 -- Bảng Subjects: thông tin môn học
 CREATE TABLE subject (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -38,8 +40,10 @@ CREATE TABLE class_subject (
     id INT AUTO_INCREMENT PRIMARY KEY,
     class_id INT NOT NULL,
     subject_id INT NOT NULL,
+    lecturer_id INT,
     FOREIGN KEY (class_id) REFERENCES class(id),
-    FOREIGN KEY (subject_id) REFERENCES subject(id)
+    FOREIGN KEY (subject_id) REFERENCES subject(id),
+    FOREIGN KEY (lecturer_id) REFERENCES user(id)
 );
 
 -- Bảng Scores: điểm sinh viên
@@ -53,11 +57,9 @@ CREATE TABLE score (
     extra_score2 FLOAT,
     extra_score3 FLOAT,
     lock_status ENUM('draft', 'locked') DEFAULT 'draft',
-    updated_by INT,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (student_id) REFERENCES user(id),
-    FOREIGN KEY (class_subject_id) REFERENCES class_subject(id),
-    FOREIGN KEY (updated_by) REFERENCES user(id)
+    FOREIGN KEY (class_subject_id) REFERENCES class_subject(id)
 );
 
 -- Bảng Forum_Posts: bài post trên diễn đàn
@@ -82,24 +84,25 @@ CREATE TABLE forum_comment (
     FOREIGN KEY (author_id) REFERENCES user(id)
 );
 
--- Insert vào Classes trước
-INSERT INTO class (name)
-VALUES 
-('CNTT2021A'),
-('CNTT2021B');
+
 
 -- Insert vào Users (2 admin, 2 giảng viên, 5 sinh viên)
-INSERT INTO user (first_name,last_name, email, password, role, avatar_url, student_code, lecturer_code, class_id)
+INSERT INTO user (first_name,last_name, email, password, role, avatar_url, student_code, lecturer_code)
 VALUES 
-('Nguyen Van', 'A', 'A.NguyenVan@ou.edu.vn', '$2a$10$5X9k5N1sTc1/CjVH5XJoje3QMYijH3ETpgkox00R0MdPaJPPrf7wO', 'admin', NULL, NULL, NULL, NULL),
-('Tran Thi', 'B', 'admin2@university.edu.vn', 'hashedpassword', 'admin', NULL, NULL, NULL, NULL),
-('Le Van', 'C', 'lecturer1@university.edu.vn', 'hashedpassword', 'lecturer', NULL, NULL, 'GV001', NULL),
-('Pham Thi', 'D', 'lecturer2@university.edu.vn', 'hashedpassword', 'lecturer', NULL, NULL, 'GV002', NULL),
-('Ho', 'One', 'sv1@student.university.edu.vn', 'hashedpassword', 'student', NULL, 'SV001', NULL, 1),
-('Student', 'One', 'sv2@student.university.edu.vn', 'hashedpassword', 'student', NULL, 'SV002', NULL, 1),
-('Student', 'One', 'sv3@student.university.edu.vn', 'hashedpassword', 'student', NULL, 'SV003', NULL, 1),
-('Student', 'One', 'sv4@student.university.edu.vn', 'hashedpassword', 'student', NULL, 'SV004', NULL, 2),
-('Student', 'One', 'sv5@student.university.edu.vn', 'hashedpassword', 'student', NULL, 'SV005', NULL, 2);
+('Nguyen Van', 'A', 'A.NguyenVan@ou.edu.vn', '$2a$10$5X9k5N1sTc1/CjVH5XJoje3QMYijH3ETpgkox00R0MdPaJPPrf7wO', 'admin', NULL, NULL, NULL),
+('Tran Thi', 'B', 'B.TranThi@ou.edu.vn', '$2a$10$5X9k5N1sTc1/CjVH5XJoje3QMYijH3ETpgkox00R0MdPaJPPrf7wO', 'lecturer', NULL, NULL, 'GV001'),
+('Le Van', 'C', 'C.LeVan@ou.edu.vn', '$2a$10$5X9k5N1sTc1/CjVH5XJoje3QMYijH3ETpgkox00R0MdPaJPPrf7wO', 'lecturer', NULL, NULL, 'GV002'),
+('Ho Phan', 'D', 'D.HoPhan@ou.edu.vn', '$2a$10$5X9k5N1sTc1/CjVH5XJoje3QMYijH3ETpgkox00R0MdPaJPPrf7wO', 'student', NULL, 'SV001', NULL),
+('Pham Thi', 'E', 'E.PhamThi@ou.edu.vn','$2a$10$5X9k5N1sTc1/CjVH5XJoje3QMYijH3ETpgkox00R0MdPaJPPrf7wO', 'student', NULL, 'SV002', NULL),
+('Phan Thi', 'F', 'F.PhanThi@ou.edu.vn','$2a$10$5X9k5N1sTc1/CjVH5XJoje3QMYijH3ETpgkox00R0MdPaJPPrf7wO', 'student', NULL, 'SV003', NULL),
+('Le Tran', 'H', 'H.LeTran@ou.edu.vn', '$2a$10$5X9k5N1sTc1/CjVH5XJoje3QMYijH3ETpgkox00R0MdPaJPPrf7wO', 'student', NULL, 'SV004', NULL),
+('Truong Ho', 'K', 'K.TruongHo@ou.edu.vn', '$2a$10$5X9k5N1sTc1/CjVH5XJoje3QMYijH3ETpgkox00R0MdPaJPPrf7wO', 'student', NULL, 'SV005', NULL);
+
+-- Insert vào Classes 
+INSERT INTO class (name,code,lecturer_id)
+VALUES 
+('Công nghệ thông tin 2021A','CNTT2021A',2),
+('Công nghệ thông tin 2021 B','CNTT2021B',3);
 
 -- Insert vào Subjects
 INSERT INTO subject (subject_code, subject_name, description, credits,image_url)
@@ -109,21 +112,21 @@ VALUES
 ('LT303', 'Lập trình hướng đối tượng', 'Lập trình Java, thiết kế OOP.', 4,'https://res.cloudinary.com/dq5ajyj0q/image/upload/v1746280233/1692946617-KYWcedi_ini1fr.jpg');
 
 -- Gán môn cho lớp
-INSERT INTO class_subject (class_id, subject_id)
+INSERT INTO class_subject (class_id, subject_id,lecturer_id)
 VALUES 
-(1, 1),
-(1, 3),
-(2, 2),
-(2, 3);
+(1, 1,2),
+(1, 3,2),
+(2, 2,3),
+(2, 3,3);
 
 -- Điểm mẫu
-INSERT INTO score (student_id, class_subject_id, midterm_score, final_score, extra_score1, lock_status, updated_by)
+INSERT INTO score (student_id, class_subject_id, midterm_score, final_score, extra_score1, lock_status)
 VALUES 
-(5, 1, 7.5, 8.0, NULL, 'locked', 3),
-(6, 1, 6.0, 7.0, NULL, 'locked', 3),
-(7, 1, 8.5, 9.0, NULL, 'locked', 3),
-(8, 2, 7.0, 7.5, NULL, 'draft', 4),
-(9, 2, 5.5, 6.0, NULL, 'draft', 4);
+(5, 1, 7.5, 8.0, NULL, 'locked'),
+(6, 1, 6.0, 7.0, NULL, 'locked'),
+(7, 1, 8.5, 9.0, NULL, 'locked'),
+(8, 2, 7.0, 7.5, NULL, 'draft'),
+(4, 2, 5.5, 6.0, NULL, 'draft');
 
 -- Forum Posts
 INSERT INTO forum_post (title, content, author_id)

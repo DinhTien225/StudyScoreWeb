@@ -5,6 +5,7 @@
 package com.myapp.repositories;
 
 import com.myapp.pojo.User;
+import java.util.List;
 
 /**
  *
@@ -14,4 +15,6 @@ public interface UserRepository {
     User getUserByEmail(String email);
     User addUser(User u);
     boolean authenticate(String email, String password);
+    List<User> getUsersByRole(String role);
+    User getUserById(int id);
 }

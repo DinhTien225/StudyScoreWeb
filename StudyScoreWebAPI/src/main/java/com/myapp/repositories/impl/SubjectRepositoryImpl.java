@@ -67,6 +67,24 @@ public class SubjectRepositoryImpl implements SubjectRepository {
         return query.getResultList();
     }
 
+    @Override
+    public long countSubjects(Map<String, String> params) {
+        Session s = this.factory.getObject().getCurrentSession();
+        CriteriaBuilder b = s.getCriteriaBuilder();
+        CriteriaQuery<Long> q = b.createQuery(Long.class);
+        Root<Subject> root = q.from(Subject.class);
+        q.select(b.count(root));
+
+        List<Predicate> predicates = new ArrayList<>();
+        String keyword = params.get("keyword");
+        if (keyword != null && !keyword.isEmpty()) {
+            predicates.add(b.like(b.lower(root.get("subjectName")), "%" + keyword.toLowerCase() + "%"));
+        }
+
+        q.where(predicates.toArray(Predicate[]::new));
+        return s.createQuery(q).getSingleResult();
+    }
+
     // Lấy môn học theo ID
     public Subject getSubjectById(int id) {
         Session s = this.factory.getObject().getCurrentSession();
@@ -91,6 +109,5 @@ public class SubjectRepositoryImpl implements SubjectRepository {
         Subject s = this.getSubjectById(id);
         se.remove(s);
     }
-    
-    
+
 }

@@ -60,4 +60,9 @@ public class SubjectServiceImpl implements SubjectService {
         this.subRepo.deleleSubject(id);
     }
 
+    @Override
+    public long countSubjects(Map<String, String> params) {
+        return this.subRepo.countSubjects(params);
+    }
+
 }

@@ -24,15 +24,8 @@
                         <li class="nav-item" sec:authorize="isAuthenticated()">
                             <a class="nav-link" th:href="@{/subjects}" >📘 Môn học</a>
                         </li>
-                        <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
-                            <a class="nav-link dropdown-toggle"  href="#" id="classDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                               🏫 Lớp học
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="classDropdown">
-                                <li th:each="c : ${classes}">
-                                    <a class="dropdown-item" th:href="@{'/?classId=' + ${c.id}}" th:text="${c.name}"></a>
-                                </li>
-                            </ul>
+                        <li class="nav-item" sec:authorize="isAuthenticated()">
+                            <a class="nav-link"  th:href="@{/classes}">🏫 Lớp học</a>
                         </li>
                         <li class="nav-item" >
                             <a class="nav-link" th:href="@{/logout}" sec:authorize="isAuthenticated()">Đăng xuất</a>

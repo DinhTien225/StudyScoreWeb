@@ -11,14 +11,15 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.Date;
 import java.util.Set;
 
 /**
@@ -31,7 +32,7 @@ import java.util.Set;
     @NamedQuery(name = "Class.findAll", query = "SELECT c FROM Class c"),
     @NamedQuery(name = "Class.findById", query = "SELECT c FROM Class c WHERE c.id = :id"),
     @NamedQuery(name = "Class.findByName", query = "SELECT c FROM Class c WHERE c.name = :name"),
-    @NamedQuery(name = "Class.findByCreatedAt", query = "SELECT c FROM Class c WHERE c.createdAt = :createdAt")})
+    @NamedQuery(name = "Class.findByCode", query = "SELECT c FROM Class c WHERE c.code = :code")})
 public class Class implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -41,11 +42,18 @@ public class Class implements Serializable {
     @Column(name = "id")
     private Integer id;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 100)
     @Column(name = "name")
     private String name;
-    @Column(name = "created_at")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createdAt;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 50)
+    @Column(name = "code")
+    private String code;
+    @JoinColumn(name = "lecturer_id", referencedColumnName = "id")
+    @ManyToOne
+    private User lecturerId;
     @OneToMany(mappedBy = "classId")
     private Set<User> userSet;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "classId")
@@ -58,9 +66,10 @@ public class Class implements Serializable {
         this.id = id;
     }
 
-    public Class(Integer id, String name) {
+    public Class(Integer id, String name, String code) {
         this.id = id;
         this.name = name;
+        this.code = code;
     }
 
     public Integer getId() {
@@ -79,13 +88,15 @@ public class Class implements Serializable {
         this.name = name;
     }
 
-    public Date getCreatedAt() {
-        return createdAt;
+    public String getCode() {
+        return code;
     }
 
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
+    public void setCode(String code) {
+        this.code = code;
     }
+
+    
 
     public Set<User> getUserSet() {
         return userSet;
@@ -127,5 +138,21 @@ public class Class implements Serializable {
     public String toString() {
         return "com.myapp.pojo.Class[ id=" + id + " ]";
     }
+
+    /**
+     * @return the lecturerId
+     */
+    public User getLecturerId() {
+        return lecturerId;
+    }
+
+    /**
+     * @param lecturerId the lecturerId to set
+     */
+    public void setLecturerId(User lecturerId) {
+        this.lecturerId = lecturerId;
+    }
+
+    
     
 }

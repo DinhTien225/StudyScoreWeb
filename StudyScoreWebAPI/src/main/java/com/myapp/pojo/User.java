@@ -17,10 +17,9 @@ import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.Date;
 import java.util.Set;
 
 /**
@@ -40,8 +39,6 @@ import java.util.Set;
     @NamedQuery(name = "User.findByAvatarUrl", query = "SELECT u FROM User u WHERE u.avatarUrl = :avatarUrl"),
     @NamedQuery(name = "User.findByStudentCode", query = "SELECT u FROM User u WHERE u.studentCode = :studentCode"),
     @NamedQuery(name = "User.findByLecturerCode", query = "SELECT u FROM User u WHERE u.lecturerCode = :lecturerCode"),
-    @NamedQuery(name = "User.findByCreatedAt", query = "SELECT u FROM User u WHERE u.createdAt = :createdAt"),
-    @NamedQuery(name = "User.findByUpdatedAt", query = "SELECT u FROM User u WHERE u.updatedAt = :updatedAt"),
     @NamedQuery(name = "User.findByActive", query = "SELECT u FROM User u WHERE u.active = :active")})
 public class User implements Serializable {
 
@@ -52,45 +49,55 @@ public class User implements Serializable {
     @Column(name = "id")
     private Integer id;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 255)
     @Column(name = "first_name")
     private String firstName;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 255)
     @Column(name = "last_name")
     private String lastName;
+    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 255)
     @Column(name = "email")
     private String email;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 255)
     @Column(name = "password")
     private String password;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 8)
     @Column(name = "role")
     private String role;
+    @Size(max = 500)
     @Column(name = "avatar_url")
     private String avatarUrl;
+    @Size(max = 50)
     @Column(name = "student_code")
     private String studentCode;
+    @Size(max = 50)
     @Column(name = "lecturer_code")
     private String lecturerCode;
-    @Column(name = "created_at")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createdAt;
-    @Column(name = "updated_at")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date updatedAt;
     @Column(name = "active")
     private Boolean active;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "studentId")
     private Set<Score> scoreSet;
-    @OneToMany(mappedBy = "updatedBy")
-    private Set<Score> scoreSet1;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "authorId")
     private Set<ForumPost> forumPostSet;
+    @OneToMany(mappedBy = "lecturerId")
+    private Set<Class> classSet;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "authorId")
     private Set<ForumComment> forumCommentSet;
     @JoinColumn(name = "class_id", referencedColumnName = "id")
     @ManyToOne
     private Class classId;
+    @OneToMany(mappedBy = "lecturerId")
+    private Set<ClassSubject> classSubjectSet;
 
     public User() {
     }
@@ -180,22 +187,6 @@ public class User implements Serializable {
         this.lecturerCode = lecturerCode;
     }
 
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Date getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Date updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
     public Boolean getActive() {
         return active;
     }
@@ -212,20 +203,20 @@ public class User implements Serializable {
         this.scoreSet = scoreSet;
     }
 
-    public Set<Score> getScoreSet1() {
-        return scoreSet1;
-    }
-
-    public void setScoreSet1(Set<Score> scoreSet1) {
-        this.scoreSet1 = scoreSet1;
-    }
-
     public Set<ForumPost> getForumPostSet() {
         return forumPostSet;
     }
 
     public void setForumPostSet(Set<ForumPost> forumPostSet) {
         this.forumPostSet = forumPostSet;
+    }
+
+    public Set<Class> getClassSet() {
+        return classSet;
+    }
+
+    public void setClassSet(Set<Class> classSet) {
+        this.classSet = classSet;
     }
 
     public Set<ForumComment> getForumCommentSet() {
@@ -242,6 +233,14 @@ public class User implements Serializable {
 
     public void setClassId(Class classId) {
         this.classId = classId;
+    }
+
+    public Set<ClassSubject> getClassSubjectSet() {
+        return classSubjectSet;
+    }
+
+    public void setClassSubjectSet(Set<ClassSubject> classSubjectSet) {
+        this.classSubjectSet = classSubjectSet;
     }
 
     @Override

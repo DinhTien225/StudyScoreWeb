@@ -1,18 +1,18 @@
 <!DOCTYPE html> 
 <html xmlns:th="http://www.thymeleaf.org">
     <head>
-        <title>Danh sách môn học</title>
+        <title> Danh sách môn học</title>
     <th:block th:replace="base :: bootstrap"></th:block>
 </head>
 <body>
     <div th:replace="base :: header"></div>
 
     <main class="container mt-4">
-        <h2 class="text-primary mb-4">Danh sách môn học</h2>
+        <h2 class="text-primary mb-4">> Danh sách môn học</h2>
 
         <div class="d-flex justify-content-between mb-3">
             <form class="d-flex" th:action="@{/subjects}" method="get">
-                <input class="form-control me-2" type="search" name="keyword" placeholder="Tìm môn học..." aria-label="Search">
+                <input class="form-control me-2" type="search" name="keyword" placeholder="Tìm môn học..." aria-label="Search" th:value="${keyword}">
                 <button class="btn btn-outline-primary" type="submit">Tìm</button>
             </form>
 
@@ -47,11 +47,42 @@
                     </td>
                     <td>
                         <button class="btn btn-danger" th:onclick="'deleteSubject(\''+@{/api/subjects/}+'\','+${s.id}+')'">&#128465;</button>
-                        <a th:href="@{'/subjects/' + ${s.id}}" class="btn btn-success">&#128296;️</a>
+                        <button class="btn btn-success"
+                                th:attr="data-id=${s.id}, 
+                                data-subjectCode=${s.subjectCode}, 
+                                data-subjectName=${s.subjectName}, 
+                                data-credits=${s.credits}, 
+                                data-description=${s.description}"
+                                data-bs-toggle="modal"
+                                data-bs-target="#editSubjectModal"
+                                onclick="populateEditModal(this)">
+                            <i class="bi bi-plus-circle me-1"></i> &#128736;
+                        </button>
+
                     </td>
                 </tr>
             </tbody>
         </table>
+        <div class="d-flex justify-content-center mt-4">
+            <nav>
+                <ul class="pagination">
+                    <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
+                        <a class="page-link" th:href="@{/subjects(page=${currentPage - 1})}"><<</a>
+                    </li>
+
+                    <li class="page-item" th:each="i : ${#numbers.sequence(1, totalPages)}"
+                        th:classappend="${i == currentPage} ? 'active'">
+                        <a class="page-link" th:href="@{/subjects(page=${i})}"
+                           th:text="${i}"></a>
+                    </li>
+
+                    <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
+                        <a class="page-link" th:href="@{/subjects(page=${currentPage + 1})}">>></a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
         <!-- Modal Thêm Môn Học -->
         <div class="modal fade" id="addSubjectModal" tabindex="-1" aria-labelledby="addSubjectModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
@@ -91,11 +122,51 @@
                 </div>
             </div>
         </div>
+        <!-- Modal Chỉnh sửa Môn Học -->
+        <div class="modal fade" id="editSubjectModal" tabindex="-1" aria-labelledby="editSubjectModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <form id="editSubjectForm" method="post" enctype="multipart/form-data">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editSubjectModalLabel">Chỉnh sửa môn học</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" id="edit-id">
+                            <div class="mb-3">
+                                <label for="edit-subjectCode" class="form-label">Mã môn</label>
+                                <input type="text" class="form-control" id="edit-subjectCode" name="subjectCode" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="edit-subjectName" class="form-label">Tên môn</label>
+                                <input type="text" class="form-control" id="edit-subjectName" name="subjectName" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="edit-credits" class="form-label">Số tín chỉ</label>
+                                <input type="number" class="form-control" id="edit-credits" name="credits" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="edit-description" class="form-label">Mô tả</label>
+                                <textarea class="form-control" id="edit-description" name="description"></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="edit-file" class="form-label">Hình ảnh</label>
+                                <input type="file" class="form-control" id="edit-file" name="file">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                            <button type="submit" class="btn btn-primary">Cập nhật</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
 
     </main>
-
-    <div th:replace="base :: footer"></div>
     <script th:src="@{/js/main.js}"></script>
+    <div th:replace="base :: footer"></div>
 
 </body>
 </html>

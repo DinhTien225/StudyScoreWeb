@@ -6,6 +6,7 @@ package com.myapp.repositories.impl;
 
 import com.myapp.pojo.User;
 import com.myapp.repositories.UserRepository;
+import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +21,9 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Repository
 @Transactional
-public class UserRepositoryImpl implements UserRepository{
-     @Autowired
+public class UserRepositoryImpl implements UserRepository {
+
+    @Autowired
     private LocalSessionFactoryBean factory;
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
@@ -40,7 +42,7 @@ public class UserRepositoryImpl implements UserRepository{
     public User addUser(User u) {
         Session s = this.factory.getObject().getCurrentSession();
         s.persist(u);
-        
+
         return u;
     }
 
@@ -49,5 +51,20 @@ public class UserRepositoryImpl implements UserRepository{
         User u = this.getUserByEmail(email);
 
         return this.passwordEncoder.matches(password, u.getPassword());
+    }
+
+    @Override
+    public List<User> getUsersByRole(String role) {
+        Session s = this.factory.getObject().getCurrentSession();
+        Query<User> q = s.createNamedQuery("User.findByRole", User.class);
+        q.setParameter("role", role);
+
+        return q.getResultList();
+    }
+
+    @Override
+    public User getUserById(int id) {
+        Session s = this.factory.getObject().getCurrentSession();
+        return s.get(User.class, id);
     }
 }

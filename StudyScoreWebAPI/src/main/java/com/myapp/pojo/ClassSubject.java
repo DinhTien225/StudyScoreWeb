@@ -45,6 +45,9 @@ public class ClassSubject implements Serializable {
     @JoinColumn(name = "subject_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Subject subjectId;
+    @JoinColumn(name = "lecturer_id", referencedColumnName = "id")
+    @ManyToOne
+    private User lecturerId;
 
     public ClassSubject() {
     }
@@ -83,6 +86,14 @@ public class ClassSubject implements Serializable {
 
     public void setSubjectId(Subject subjectId) {
         this.subjectId = subjectId;
+    }
+
+    public User getLecturerId() {
+        return lecturerId;
+    }
+
+    public void setLecturerId(User lecturerId) {
+        this.lecturerId = lecturerId;
     }
 
     @Override

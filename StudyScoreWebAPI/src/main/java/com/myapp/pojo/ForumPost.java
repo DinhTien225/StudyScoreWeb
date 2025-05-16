@@ -20,6 +20,8 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
@@ -45,10 +47,14 @@ public class ForumPost implements Serializable {
     @Column(name = "id")
     private Integer id;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 255)
     @Column(name = "title")
     private String title;
     @Basic(optional = false)
+    @NotNull
     @Lob
+    @Size(min = 1, max = 65535)
     @Column(name = "content")
     private String content;
     @Column(name = "created_at")

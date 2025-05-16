@@ -18,4 +18,5 @@ public interface SubjectService {
     Subject getSubjectById(int id);
     Subject addOrUpdateSubject(Subject s);
     void deleleSubject(int id);
+    long countSubjects(Map<String, String> params);
 }

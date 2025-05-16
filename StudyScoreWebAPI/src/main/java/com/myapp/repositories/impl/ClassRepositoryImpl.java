@@ -44,7 +44,7 @@ public class ClassRepositoryImpl implements ClassRepository{
                 List<Predicate> predicates = new ArrayList<>();
 
                 // Tìm kiếm lớp theo tên (nếu có)
-                String name = params.get("name");
+                String name = params.get("keyword");
                 if (name != null && !name.isEmpty()) {
                     predicates.add(b.like(root.get("name"), "%" + name + "%"));
                 }
@@ -70,5 +70,42 @@ public class ClassRepositoryImpl implements ClassRepository{
     public Class getClassById(int id) {
         Session s = this.factory.getObject().getCurrentSession();
             return s.get(Class.class, id);
+    }
+
+    @Override
+    public Class addOrUpdateClass(Class c) {
+        Session se = this.factory.getObject().getCurrentSession();
+        if (c.getId() == null) {
+            se.persist(c);
+        } else {
+            se.merge(c);
+        }
+
+        return c;
+    }
+
+    @Override
+    public void deleleClass(int id) {
+        Session se = this.factory.getObject().getCurrentSession();
+        Class s = this.getClassById(id);
+        se.remove(s);
+    }
+
+    @Override
+    public long countClasses(Map<String, String> params) {
+        Session s = this.factory.getObject().getCurrentSession();
+        CriteriaBuilder b = s.getCriteriaBuilder();
+        CriteriaQuery<Long> q = b.createQuery(Long.class);
+        Root<Class> root = q.from(Class.class);
+        q.select(b.count(root));
+
+        List<Predicate> predicates = new ArrayList<>();
+        String keyword = params.get("keyword");
+        if (keyword != null && !keyword.isEmpty()) {
+            predicates.add(b.like(b.lower(root.get("name")), "%" + keyword.toLowerCase() + "%"));
+        }
+
+        q.where(predicates.toArray(Predicate[]::new));
+        return s.createQuery(q).getSingleResult();
     }
 }

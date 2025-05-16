@@ -17,6 +17,8 @@ import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Set;
 import org.springframework.web.multipart.MultipartFile;
@@ -43,23 +45,29 @@ public class Subject implements Serializable {
     @Column(name = "id")
     private Integer id;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 50)
     @Column(name = "subject_code")
     private String subjectCode;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 255)
     @Column(name = "subject_name")
     private String subjectName;
     @Lob
+    @Size(max = 65535)
     @Column(name = "description")
     private String description;
     @Column(name = "credits")
     private Integer credits;
+    @Size(max = 500)
     @Column(name = "image_url")
     private String imageUrl;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "subjectId")
     private Set<ClassSubject> classSubjectSet;
-    @Transient
+     @Transient
     private MultipartFile file;
-    
+     
     public Subject() {
     }
 

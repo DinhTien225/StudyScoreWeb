@@ -17,6 +17,7 @@ import jakarta.persistence.NamedQuery;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import jakarta.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -55,6 +56,7 @@ public class Score implements Serializable {
     private Float extraScore2;
     @Column(name = "extra_score3")
     private Float extraScore3;
+    @Size(max = 6)
     @Column(name = "lock_status")
     private String lockStatus;
     @Column(name = "updated_at")
@@ -66,9 +68,6 @@ public class Score implements Serializable {
     @JoinColumn(name = "student_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private User studentId;
-    @JoinColumn(name = "updated_by", referencedColumnName = "id")
-    @ManyToOne
-    private User updatedBy;
 
     public Score() {
     }
@@ -155,14 +154,6 @@ public class Score implements Serializable {
 
     public void setStudentId(User studentId) {
         this.studentId = studentId;
-    }
-
-    public User getUpdatedBy() {
-        return updatedBy;
-    }
-
-    public void setUpdatedBy(User updatedBy) {
-        this.updatedBy = updatedBy;
     }
 
     @Override
