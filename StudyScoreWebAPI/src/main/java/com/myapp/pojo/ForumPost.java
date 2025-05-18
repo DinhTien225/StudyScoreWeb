@@ -4,6 +4,7 @@
  */
 package com.myapp.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Basic;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -66,6 +67,7 @@ public class ForumPost implements Serializable {
     @JoinColumn(name = "author_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private User authorId;
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "postId")
     private Set<ForumComment> forumCommentSet;
 

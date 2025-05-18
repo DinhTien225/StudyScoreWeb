@@ -4,6 +4,7 @@
  */
 package com.myapp.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Basic;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -85,17 +86,22 @@ public class User implements Serializable {
     private String lecturerCode;
     @Column(name = "active")
     private Boolean active;
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "studentId")
     private Set<Score> scoreSet;
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "authorId")
     private Set<ForumPost> forumPostSet;
+    @JsonIgnore
     @OneToMany(mappedBy = "lecturerId")
     private Set<Class> classSet;
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "authorId")
     private Set<ForumComment> forumCommentSet;
     @JoinColumn(name = "class_id", referencedColumnName = "id")
     @ManyToOne
     private Class classId;
+    @JsonIgnore
     @OneToMany(mappedBy = "lecturerId")
     private Set<ClassSubject> classSubjectSet;
 

@@ -13,6 +13,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -29,6 +30,7 @@ import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
  *
  * @author ADMIN
  */
+@EnableMethodSecurity(prePostEnabled = true)
 @Configuration
 @EnableWebSecurity
 @EnableTransactionManagement
@@ -49,9 +51,6 @@ public class SpringSecurityConfigs {
                 .csrf(csrf -> csrf.disable())
         .authorizeHttpRequests(auth -> auth
             .requestMatchers("/login","/api/**").permitAll()
-            .requestMatchers("/api/admin/**").hasRole("ADMIN")
-            .requestMatchers("/api/lecturer/**").hasRole("LECTURER")
-            .requestMatchers("/api/student/**").hasRole("STUDENT")
             .anyRequest().authenticated()
         )
         .formLogin(form -> form

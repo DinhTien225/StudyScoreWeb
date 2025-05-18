@@ -4,6 +4,7 @@
  */
 package com.myapp.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Basic;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -63,6 +64,7 @@ public class Subject implements Serializable {
     @Size(max = 500)
     @Column(name = "image_url")
     private String imageUrl;
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "subjectId")
     private Set<ClassSubject> classSubjectSet;
      @Transient
