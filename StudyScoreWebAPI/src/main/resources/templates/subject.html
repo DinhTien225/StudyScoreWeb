@@ -46,7 +46,7 @@
                         <span th:if="${s.imageUrl == null}">Không có ảnh</span>
                     </td>
                     <td>
-                        <button class="btn btn-danger" th:onclick="'deleteSubject(\''+@{/api/subjects/}+'\','+${s.id}+')'">&#128465;</button>
+                        <button class="btn btn-danger" th:onclick="'deleteObject(\''+@{/api/subjects/}+'\','+${s.id}+')'">&#128465;</button>
                         <button class="btn btn-success"
                                 th:attr="data-id=${s.id}, 
                                 data-subjectCode=${s.subjectCode}, 
@@ -55,7 +55,7 @@
                                 data-description=${s.description}"
                                 data-bs-toggle="modal"
                                 data-bs-target="#editSubjectModal"
-                                onclick="populateEditModal(this)">
+                                onclick="populateSubjectEditModal(this)">
                             <i class="bi bi-plus-circle me-1"></i> &#128736;
                         </button>
 

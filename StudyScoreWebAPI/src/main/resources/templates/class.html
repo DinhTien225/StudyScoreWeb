@@ -38,7 +38,7 @@
                     <td th:text="${c.name}"></td>
                     <td th:text="${c.lecturerId != null ? c.lecturerId.firstName + ' ' + c.lecturerId.lastName : 'Chưa có'}"></td>
                     <td>
-                        <button class="btn btn-danger" th:onclick="'deleteClass(\''+@{/api/classes/}+'\','+${c.id}+')'">&#128465;</button>
+                        <button class="btn btn-danger" th:onclick="'deleteObject(\''+@{/api/classes/}+'\','+${c.id}+')'">&#128465;</button>
                         <button class="btn btn-success"
                                 th:attr="data-id=${c.id},data-code=${c.code}, 
                                 data-name=${c.name}, data-name=${c.name}, data-lecturer-id=${c.lecturerId != null ? c.lecturerId.id : ''}"

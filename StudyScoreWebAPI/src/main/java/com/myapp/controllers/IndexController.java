@@ -6,6 +6,7 @@ package com.myapp.controllers;
 
 import com.myapp.services.ClassService;
 import com.myapp.services.SubjectService;
+import com.myapp.services.ClassSubjectService;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,16 +26,19 @@ public class IndexController {
     @Autowired
     private ClassService classService;
     @Autowired
+    private ClassSubjectService classSubService;
+    @Autowired
     private SubjectService subService;
     
     @ModelAttribute
     public void commonResponse(Model model, @RequestParam Map<String, String> params) {
         model.addAttribute("subjects", this.subService.getSubjects(params));
+        model.addAttribute("classes",this.classService.getClasses(params));
+        model.addAttribute("classSubjects",this.classSubService.getClassSubjects(params));
     }
     
     @RequestMapping("/")
     public String index(Model model, @RequestParam Map<String, String> params){
-        model.addAttribute("classes",this.classService.getClasses(params));
         return "index";
     }
 }

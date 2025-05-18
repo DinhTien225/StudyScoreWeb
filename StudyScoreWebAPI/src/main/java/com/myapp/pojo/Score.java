@@ -14,6 +14,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -68,6 +70,12 @@ public class Score implements Serializable {
     @JoinColumn(name = "student_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private User studentId;
+
+    @PrePersist
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = new Date();
+    }
 
     public Score() {
     }
@@ -180,5 +188,5 @@ public class Score implements Serializable {
     public String toString() {
         return "com.myapp.pojo.Score[ id=" + id + " ]";
     }
-    
+
 }

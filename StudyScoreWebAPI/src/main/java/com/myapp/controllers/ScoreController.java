@@ -4,9 +4,8 @@
  */
 package com.myapp.controllers;
 
-import com.myapp.pojo.Class;
-import com.myapp.pojo.User;
-import com.myapp.services.ClassService;
+import com.myapp.pojo.Score;
+import com.myapp.services.ScoreService;
 import com.myapp.services.UserService;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,50 +22,50 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @author ADMIN
  */
 @Controller
-public class ClassController {
-
+public class ScoreController {
     @Autowired
-    private ClassService classService;
+    private ScoreService scoreService;
     @Autowired
     private UserService userService;
 
-    @GetMapping("/classes")
-    public String listClasses(Model model, @RequestParam Map<String, String> params) {
+    @GetMapping("/scores")
+    public String listScores(Model model, @RequestParam Map<String, String> params) {
         int page = Integer.parseInt(params.getOrDefault("page", "1"));
         String keyword = params.get("keyword");
 
-        long totalClasses = classService.countClasses(params);
+        long totalScores = scoreService.countScores(params);
         int pageSize = 6;
-        int totalPages = (int) Math.ceil((double) totalClasses / pageSize);
+        int totalPages = (int) Math.ceil((double) totalScores/ pageSize);
 
-        model.addAttribute("class", new Class());
+        model.addAttribute("score", new Score());
+        model.addAttribute("scores", this.scoreService.getScores(params));
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", totalPages);
         model.addAttribute("keyword", keyword);
-        model.addAttribute("lecturers", userService.getUsersByRole("lecturer"));
+        model.addAttribute("students", userService.getUsersByRole("student"));
 
-        return "class";
+        return "score";
     }
 
-    @PostMapping("/classes/add")
-    public String add(@ModelAttribute(value = "class") Class c) {
-        this.classService.addOrUpdateClass(c);
+    @PostMapping("/scores/add")
+    public String add(@ModelAttribute(value = "score") Score sc) {
+        this.scoreService.addOrUpdateScore(sc);
 
-        return "class";
+        return "score";
     }
 
-    @GetMapping("/classes/{id}")
+    @GetMapping("/scores/{id}")
     public String updateView(Model model, @PathVariable(value = "id") int id) {
-        model.addAttribute("class", this.classService.getClassById(id));
-
-        return "class";
+        model.addAttribute("score", this.scoreService.getScoreById(id));
+        
+        return "score";
     }
-
-    @PostMapping("/classes/{id}")
-    public String updateClass(@PathVariable(value = "id") int id, @ModelAttribute Class c) {
-        c.setId(id);
-        classService.addOrUpdateClass(c);
-        return "class";
+    
+    @PostMapping("/scores/{id}")
+    public String updateScore(@PathVariable(value = "id") int id, @ModelAttribute Score sc) {
+        sc.setId(id);
+        scoreService.addOrUpdateScore(sc);
+        return "score";
     }
 
 }

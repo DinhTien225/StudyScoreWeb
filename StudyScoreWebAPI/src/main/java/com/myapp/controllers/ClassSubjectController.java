@@ -4,9 +4,8 @@
  */
 package com.myapp.controllers;
 
-import com.myapp.pojo.Class;
-import com.myapp.pojo.User;
-import com.myapp.services.ClassService;
+import com.myapp.pojo.ClassSubject;
+import com.myapp.services.ClassSubjectService;
 import com.myapp.services.UserService;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,50 +22,50 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @author ADMIN
  */
 @Controller
-public class ClassController {
-
+public class ClassSubjectController {
+    
     @Autowired
-    private ClassService classService;
+    private ClassSubjectService classSubService;
     @Autowired
     private UserService userService;
 
-    @GetMapping("/classes")
-    public String listClasses(Model model, @RequestParam Map<String, String> params) {
+    @GetMapping("/classSubjects")
+    public String listClassSubjects(Model model, @RequestParam Map<String, String> params) {
         int page = Integer.parseInt(params.getOrDefault("page", "1"));
         String keyword = params.get("keyword");
 
-        long totalClasses = classService.countClasses(params);
+        long totalClasses = classSubService.countClassSubjects(params);
         int pageSize = 6;
         int totalPages = (int) Math.ceil((double) totalClasses / pageSize);
 
-        model.addAttribute("class", new Class());
+        model.addAttribute("classSubject", new ClassSubject());
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", totalPages);
         model.addAttribute("keyword", keyword);
         model.addAttribute("lecturers", userService.getUsersByRole("lecturer"));
 
-        return "class";
+        return "classSubject";
     }
 
-    @PostMapping("/classes/add")
-    public String add(@ModelAttribute(value = "class") Class c) {
-        this.classService.addOrUpdateClass(c);
+    @PostMapping("/classSubjects/add")
+    public String add(@ModelAttribute(value = "classSubject") com.myapp.pojo.ClassSubject cs) {
+        this.classSubService.addOrUpdateClassSubject(cs);
 
-        return "class";
+        return "classSubject";
     }
 
-    @GetMapping("/classes/{id}")
+    @GetMapping("/classSubjects/{id}")
     public String updateView(Model model, @PathVariable(value = "id") int id) {
-        model.addAttribute("class", this.classService.getClassById(id));
+        model.addAttribute("class", this.classSubService.getClassSubjectById(id));
 
-        return "class";
+        return "classSubject";
     }
 
-    @PostMapping("/classes/{id}")
-    public String updateClass(@PathVariable(value = "id") int id, @ModelAttribute Class c) {
-        c.setId(id);
-        classService.addOrUpdateClass(c);
-        return "class";
+    @PostMapping("/classSubjects/{id}")
+    public String updateClass(@PathVariable(value = "id") int id, @ModelAttribute com.myapp.pojo.ClassSubject cs) {
+        cs.setId(id);
+        classSubService.addOrUpdateClassSubject(cs);
+        return "classSubject";
     }
 
 }

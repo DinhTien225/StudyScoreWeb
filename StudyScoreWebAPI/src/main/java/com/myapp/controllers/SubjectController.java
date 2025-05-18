@@ -37,7 +37,6 @@ public class SubjectController {
         int totalPages = (int) Math.ceil((double) totalSubjects / pageSize);
 
         model.addAttribute("subject", new Subject());
-        model.addAttribute("subjects", subjectService.getSubjects(params));
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", totalPages);
         model.addAttribute("keyword", keyword);
