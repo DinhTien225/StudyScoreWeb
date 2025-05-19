@@ -6,6 +6,7 @@ package com.myapp.configs;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+import jakarta.servlet.http.Cookie;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -36,6 +37,7 @@ import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 @EnableTransactionManagement
 @ComponentScan(basePackages = "com.myapp")
 public class SpringSecurityConfigs {
+
     @Autowired
     private UserDetailsService userDetailsService;
 
@@ -49,23 +51,32 @@ public class SpringSecurityConfigs {
             Exception {
         http.cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(csrf -> csrf.disable())
-        .authorizeHttpRequests(auth -> auth
-            .requestMatchers("/login","/api/**").permitAll()
-            .anyRequest().authenticated()
-        )
-        .formLogin(form -> form
-            .loginPage("/login")
-            .loginProcessingUrl("/login")
-            .defaultSuccessUrl("/", true)
-            .failureUrl("/login?error=true")
-            .permitAll()
-        )
-        .logout(logout -> logout
-            .logoutSuccessUrl("/login")
-            .permitAll()
-        );
-
-    return http.build();
+                .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/").hasRole("ADMIN")
+                .requestMatchers("/api/**").permitAll()
+                .anyRequest().authenticated()
+                )
+                .formLogin(form -> form
+                .loginPage("/login")
+                .loginProcessingUrl("/login")
+                .defaultSuccessUrl("/", true)
+                .failureUrl("/login?error=true")
+                .permitAll()
+                )
+                .logout(logout -> logout
+                .logoutSuccessUrl("/login")
+                .deleteCookies("JSESSIONID")
+                .permitAll()
+                )
+                .exceptionHandling(exception -> exception
+                .accessDeniedHandler((request, response, accessDeniedException) -> {
+                    // logout user khi bị deny
+                    request.getSession().invalidate();
+                    response.sendRedirect("/login?accessDenied");
+                })
+                );
+     
+        return http.build();
     }
 
     @Bean

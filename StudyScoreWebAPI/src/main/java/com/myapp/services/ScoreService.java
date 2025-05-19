@@ -18,4 +18,6 @@ public interface ScoreService {
     Score addOrUpdateScore(Score sc);
     void deleleScore(int id);
     long countScores(Map<String, String> params);
+    List<Score> getScoresByClassSubjectId(int classSubjectId);
+    void lockScoresByClassSubjectId(int classSubjectId);
 }

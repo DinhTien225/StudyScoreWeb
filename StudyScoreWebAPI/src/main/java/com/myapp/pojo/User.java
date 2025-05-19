@@ -72,7 +72,7 @@ public class User implements Serializable {
     private String password;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 8)
+    @Size(min = 1, max = 20)
     @Column(name = "role")
     private String role;
     @Size(max = 500)

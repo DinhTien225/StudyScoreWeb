@@ -42,7 +42,7 @@ public class ScoreController {
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", totalPages);
         model.addAttribute("keyword", keyword);
-        model.addAttribute("students", userService.getUsersByRole("student"));
+        model.addAttribute("students", userService.getUsersByRole("ROLE_STUDENT"));
 
         return "score";
     }

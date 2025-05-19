@@ -18,4 +18,6 @@ public interface ScoreRepository {
     Score addOrUpdateScore(Score sc);
     void deleleScore(int id);
     long countScores(Map<String, String> params);
+    List<Score> getScoresByClassSubjectId(int classSubjectId);
+    void saveAll(List<Score> scores);
 }

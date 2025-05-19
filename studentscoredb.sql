@@ -1,5 +1,3 @@
-
-
 -- Bảng Users: lưu thông tin tài khoản
 CREATE TABLE user (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -7,7 +5,7 @@ CREATE TABLE user (
     last_name VARCHAR(255) NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
-    role ENUM('admin', 'lecturer', 'student') NOT NULL,
+    role varchar(20) NOT NULL,
     avatar_url VARCHAR(500),
     student_code VARCHAR(50),
     lecturer_code VARCHAR(50),
@@ -89,14 +87,14 @@ CREATE TABLE forum_comment (
 -- Insert vào Users (2 admin, 2 giảng viên, 5 sinh viên)
 INSERT INTO user (first_name,last_name, email, password, role, avatar_url, student_code, lecturer_code)
 VALUES 
-('Nguyen Van', 'A', 'A.NguyenVan@ou.edu.vn', '$2a$10$5X9k5N1sTc1/CjVH5XJoje3QMYijH3ETpgkox00R0MdPaJPPrf7wO', 'admin', NULL, NULL, NULL),
-('Tran Thi', 'B', 'B.TranThi@ou.edu.vn', '$2a$10$5X9k5N1sTc1/CjVH5XJoje3QMYijH3ETpgkox00R0MdPaJPPrf7wO', 'lecturer', NULL, NULL, 'GV001'),
-('Le Van', 'C', 'C.LeVan@ou.edu.vn', '$2a$10$5X9k5N1sTc1/CjVH5XJoje3QMYijH3ETpgkox00R0MdPaJPPrf7wO', 'lecturer', NULL, NULL, 'GV002'),
-('Ho Phan', 'D', 'D.HoPhan@ou.edu.vn', '$2a$10$5X9k5N1sTc1/CjVH5XJoje3QMYijH3ETpgkox00R0MdPaJPPrf7wO', 'student', NULL, 'SV001', NULL),
-('Pham Thi', 'E', 'E.PhamThi@ou.edu.vn','$2a$10$5X9k5N1sTc1/CjVH5XJoje3QMYijH3ETpgkox00R0MdPaJPPrf7wO', 'student', NULL, 'SV002', NULL),
-('Phan Thi', 'F', 'F.PhanThi@ou.edu.vn','$2a$10$5X9k5N1sTc1/CjVH5XJoje3QMYijH3ETpgkox00R0MdPaJPPrf7wO', 'student', NULL, 'SV003', NULL),
-('Le Tran', 'H', 'H.LeTran@ou.edu.vn', '$2a$10$5X9k5N1sTc1/CjVH5XJoje3QMYijH3ETpgkox00R0MdPaJPPrf7wO', 'student', NULL, 'SV004', NULL),
-('Truong Ho', 'K', 'K.TruongHo@ou.edu.vn', '$2a$10$5X9k5N1sTc1/CjVH5XJoje3QMYijH3ETpgkox00R0MdPaJPPrf7wO', 'student', NULL, 'SV005', NULL);
+('Nguyen Van', 'A', 'A.NguyenVan@ou.edu.vn', '$2a$10$5X9k5N1sTc1/CjVH5XJoje3QMYijH3ETpgkox00R0MdPaJPPrf7wO', 'ROLE_ADMIN', NULL, NULL, NULL),
+('Tran Thi', 'B', 'B.TranThi@ou.edu.vn', '$2a$10$5X9k5N1sTc1/CjVH5XJoje3QMYijH3ETpgkox00R0MdPaJPPrf7wO', 'ROLE_LECTURER', NULL, NULL, 'GV001'),
+('Le Van', 'C', 'C.LeVan@ou.edu.vn', '$2a$10$5X9k5N1sTc1/CjVH5XJoje3QMYijH3ETpgkox00R0MdPaJPPrf7wO', 'ROLE_LECTURER', NULL, NULL, 'GV002'),
+('Ho Phan', 'D', 'D.HoPhan@ou.edu.vn', '$2a$10$5X9k5N1sTc1/CjVH5XJoje3QMYijH3ETpgkox00R0MdPaJPPrf7wO', 'ROLE_STUDENT', NULL, 'SV001', NULL),
+('Pham Thi', 'E', 'E.PhamThi@ou.edu.vn','$2a$10$5X9k5N1sTc1/CjVH5XJoje3QMYijH3ETpgkox00R0MdPaJPPrf7wO', 'ROLE_STUDENT', NULL, 'SV002', NULL),
+('Phan Thi', 'F', 'F.PhanThi@ou.edu.vn','$2a$10$5X9k5N1sTc1/CjVH5XJoje3QMYijH3ETpgkox00R0MdPaJPPrf7wO', 'ROLE_STUDENT', NULL, 'SV003', NULL),
+('Le Tran', 'H', 'H.LeTran@ou.edu.vn', '$2a$10$5X9k5N1sTc1/CjVH5XJoje3QMYijH3ETpgkox00R0MdPaJPPrf7wO', 'ROLE_STUDENT', NULL, 'SV004', NULL),
+('Truong Ho', 'K', 'K.TruongHo@ou.edu.vn', '$2a$10$5X9k5N1sTc1/CjVH5XJoje3QMYijH3ETpgkox00R0MdPaJPPrf7wO', 'ROLE_STUDENT', NULL, 'SV005', NULL);
 
 -- Insert vào Classes 
 INSERT INTO class (name,code,lecturer_id)

@@ -59,7 +59,7 @@ public class UserServiceImpl implements UserService {
         }
         
         Set<GrantedAuthority> authorities = new HashSet<>();
-        authorities.add(new SimpleGrantedAuthority("ROLE_" + u.getRole().toUpperCase()));
+        authorities.add(new SimpleGrantedAuthority(u.getRole()));
         
         return new org.springframework.security.core.userdetails.User(
                 u.getEmail(), u.getPassword(), authorities);
@@ -72,7 +72,7 @@ public class UserServiceImpl implements UserService {
         u.setLastName(params.get("last_name"));
         u.setEmail(params.get("email"));
         u.setPassword(this.passwordEncoder.encode(params.get("password")));
-        u.setRole("student");
+        u.setRole("ROLE_STUDENT");
         u.setStudentCode(params.get("student_code"));
         u.setLecturerCode(params.get("lecturer_code"));
         

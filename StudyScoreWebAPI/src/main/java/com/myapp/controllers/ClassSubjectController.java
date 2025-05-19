@@ -42,7 +42,7 @@ public class ClassSubjectController {
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", totalPages);
         model.addAttribute("keyword", keyword);
-        model.addAttribute("lecturers", userService.getUsersByRole("lecturer"));
+        model.addAttribute("lecturers", userService.getUsersByRole("ROLE_LECTURER"));
 
         return "classSubject";
     }

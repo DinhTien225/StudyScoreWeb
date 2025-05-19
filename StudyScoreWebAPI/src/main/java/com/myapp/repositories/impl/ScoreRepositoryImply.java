@@ -111,7 +111,6 @@ public class ScoreRepositoryImply implements ScoreRepository {
         } else {
             se.merge(sc);
         }
-
         return sc;
     }
 
@@ -159,4 +158,26 @@ public class ScoreRepositoryImply implements ScoreRepository {
         return s.createQuery(q).getSingleResult();
     }
 
+    @Override
+    public List<Score> getScoresByClassSubjectId(int classSubjectId) {
+        Session s = this.factory.getObject().getCurrentSession();
+        CriteriaBuilder cb = s.getCriteriaBuilder();
+        CriteriaQuery<Score> q = cb.createQuery(Score.class);
+        Root<Score> root = q.from(Score.class);
+        q.select(root);
+
+        // Điều kiện: chỉ lấy điểm theo classSubjectId
+        Predicate condition = cb.equal(root.get("classSubjectId").get("id"), classSubjectId);
+        q.where(condition);
+
+        return s.createQuery(q).getResultList();
+    }
+
+    @Override
+    public void saveAll(List<Score> scores) {
+        Session session = factory.getObject().getCurrentSession();
+        for (Score s : scores) {
+            session.merge(s);
+        }
+    }
 }

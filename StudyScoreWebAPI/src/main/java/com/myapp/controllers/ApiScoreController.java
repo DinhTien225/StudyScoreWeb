@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -44,9 +45,15 @@ public class ApiScoreController {
         return new ResponseEntity<>(scoreService.getScores(params), HttpStatus.OK);
     }
     
-    // api/scores/{id} – Chi tiết môn học 
+    // api/scores/{id} – Chi tiết  
     @GetMapping("/scores/{id}")
     public ResponseEntity<Score> retrieve(@PathVariable(value = "id") int id){
         return new ResponseEntity<>(scoreService.getScoreById(id), HttpStatus.OK);
+    }
+    
+    @PutMapping("/scores/lock/{classSubjectId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void lockScores(@PathVariable(value = "classSubjectId") int classSubjectId){
+        this.scoreService.lockScoresByClassSubjectId(classSubjectId);
     }
 }

@@ -7,6 +7,7 @@ package com.myapp.services.impl;
 import com.myapp.pojo.Score;
 import com.myapp.repositories.ScoreRepository;
 import com.myapp.services.ScoreService;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,8 @@ import org.springframework.stereotype.Service;
  * @author ADMIN
  */
 @Service
-public class ScoreServiceImply implements ScoreService{
+public class ScoreServiceImply implements ScoreService {
+
     @Autowired
     public ScoreRepository scoreRepo;
 
@@ -45,5 +47,27 @@ public class ScoreServiceImply implements ScoreService{
     public long countScores(Map<String, String> params) {
         return this.scoreRepo.countScores(params);
     }
-    
+
+    @Override
+    public List<Score> getScoresByClassSubjectId(int classSubjectId) {
+        return this.scoreRepo.getScoresByClassSubjectId(classSubjectId);
+    }
+
+    @Override
+    public void lockScoresByClassSubjectId(int classSubjectId) {
+        List<Score> scores = scoreRepo.getScoresByClassSubjectId(classSubjectId);
+
+        for (Score s : scores) {
+            s.setLockStatus("locked");  
+        }
+
+        this.scoreRepo.saveAll(scores);
+
+//        // (Tùy chọn) Gửi email cho sinh viên thông báo điểm đã được khóa
+//        for (Score s : scores) {
+//            String email = s.getStudentId().getEmail(); // nếu có getEmail()
+//            // Gửi email tại đây, dùng service hoặc tạo async queue
+//        }
+    }
+
 }
