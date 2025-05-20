@@ -67,9 +67,9 @@ public class Subject implements Serializable {
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "subjectId")
     private Set<ClassSubject> classSubjectSet;
-     @Transient
+    
+    @Transient
     private MultipartFile file;
-     
     public Subject() {
     }
 

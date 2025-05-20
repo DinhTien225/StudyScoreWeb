@@ -64,19 +64,15 @@ public class Score implements Serializable {
     @Column(name = "updated_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
-    @JoinColumn(name = "class_subject_id", referencedColumnName = "id")
+    @JoinColumn(name = "student_class_subject_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private ClassSubject classSubjectId;
-    @JoinColumn(name = "student_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private User studentId;
+    private StudentClassSubject studentClassSubjectId;
 
     @PrePersist
     @PreUpdate
     protected void onUpdate() {
         updatedAt = new Date();
     }
-
     public Score() {
     }
 
@@ -148,20 +144,12 @@ public class Score implements Serializable {
         this.updatedAt = updatedAt;
     }
 
-    public ClassSubject getClassSubjectId() {
-        return classSubjectId;
+    public StudentClassSubject getStudentClassSubjectId() {
+        return studentClassSubjectId;
     }
 
-    public void setClassSubjectId(ClassSubject classSubjectId) {
-        this.classSubjectId = classSubjectId;
-    }
-
-    public User getStudentId() {
-        return studentId;
-    }
-
-    public void setStudentId(User studentId) {
-        this.studentId = studentId;
+    public void setStudentClassSubjectId(StudentClassSubject studentClassSubjectId) {
+        this.studentClassSubjectId = studentClassSubjectId;
     }
 
     @Override
@@ -188,5 +176,5 @@ public class Score implements Serializable {
     public String toString() {
         return "com.myapp.pojo.Score[ id=" + id + " ]";
     }
-
+    
 }

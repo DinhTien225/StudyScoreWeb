@@ -20,4 +20,5 @@ public interface ScoreRepository {
     long countScores(Map<String, String> params);
     List<Score> getScoresByClassSubjectId(int classSubjectId);
     void saveAll(List<Score> scores);
+    List<Score> getScoresByStudentId(int studentId);
 }

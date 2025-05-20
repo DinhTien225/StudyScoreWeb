@@ -87,9 +87,6 @@ public class User implements Serializable {
     @Column(name = "active")
     private Boolean active;
     @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "studentId")
-    private Set<Score> scoreSet;
-    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "authorId")
     private Set<ForumPost> forumPostSet;
     @JsonIgnore
@@ -98,6 +95,9 @@ public class User implements Serializable {
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "authorId")
     private Set<ForumComment> forumCommentSet;
+    @JsonIgnore
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "studentId")
+    private Set<StudentClassSubject> studentClassSubjectSet;
     @JoinColumn(name = "class_id", referencedColumnName = "id")
     @ManyToOne
     private Class classId;
@@ -201,14 +201,6 @@ public class User implements Serializable {
         this.active = active;
     }
 
-    public Set<Score> getScoreSet() {
-        return scoreSet;
-    }
-
-    public void setScoreSet(Set<Score> scoreSet) {
-        this.scoreSet = scoreSet;
-    }
-
     public Set<ForumPost> getForumPostSet() {
         return forumPostSet;
     }
@@ -231,6 +223,14 @@ public class User implements Serializable {
 
     public void setForumCommentSet(Set<ForumComment> forumCommentSet) {
         this.forumCommentSet = forumCommentSet;
+    }
+
+    public Set<StudentClassSubject> getStudentClassSubjectSet() {
+        return studentClassSubjectSet;
+    }
+
+    public void setStudentClassSubjectSet(Set<StudentClassSubject> studentClassSubjectSet) {
+        this.studentClassSubjectSet = studentClassSubjectSet;
     }
 
     public Class getClassId() {

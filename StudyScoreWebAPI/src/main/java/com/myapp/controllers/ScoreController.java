@@ -7,6 +7,7 @@ package com.myapp.controllers;
 import com.myapp.pojo.Score;
 import com.myapp.services.ScoreService;
 import com.myapp.services.UserService;
+import com.myapp.services.StudentClassSubjectService;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,6 +28,8 @@ public class ScoreController {
     private ScoreService scoreService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private StudentClassSubjectService stuClassSubService;
 
     @GetMapping("/scores")
     public String listScores(Model model, @RequestParam Map<String, String> params) {
@@ -42,7 +45,8 @@ public class ScoreController {
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", totalPages);
         model.addAttribute("keyword", keyword);
-        model.addAttribute("students", userService.getUsersByRole("ROLE_STUDENT"));
+        model.addAttribute("students", this.userService.getUsersByRole("ROLE_STUDENT"));
+        model.addAttribute("studentClassSubjects", this.stuClassSubService.getStudentClassSubjects(params));
 
         return "score";
     }

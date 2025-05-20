@@ -8,6 +8,7 @@ import com.myapp.formatters.UserFormatter;
 import com.myapp.formatters.ClassFormatter;
 import com.myapp.formatters.SubjectFormatter;
 import com.myapp.formatters.ClassSubjectFormatter;
+import com.myapp.formatters.StudentClassSubjectFormatter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -44,6 +45,7 @@ public class WebAppContextConfigs implements WebMvcConfigurer {
         registry.addFormatter(new ClassFormatter());
         registry.addFormatter(new SubjectFormatter());
         registry.addFormatter(new ClassSubjectFormatter());
+        registry.addFormatter(new StudentClassSubjectFormatter());
     }
     
     @Override

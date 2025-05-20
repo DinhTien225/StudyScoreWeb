@@ -20,4 +20,5 @@ public interface ScoreService {
     long countScores(Map<String, String> params);
     List<Score> getScoresByClassSubjectId(int classSubjectId);
     void lockScoresByClassSubjectId(int classSubjectId);
+    List<Score> getScoresByStudentId(int studentId);
 }

@@ -5,6 +5,8 @@
 package com.myapp.repositories.impl;
 
 import com.myapp.pojo.Score;
+import com.myapp.pojo.StudentClassSubject;
+import com.myapp.pojo.User;
 import com.myapp.repositories.ScoreRepository;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
@@ -166,8 +168,11 @@ public class ScoreRepositoryImply implements ScoreRepository {
         Root<Score> root = q.from(Score.class);
         q.select(root);
 
-        // Điều kiện: chỉ lấy điểm theo classSubjectId
-        Predicate condition = cb.equal(root.get("classSubjectId").get("id"), classSubjectId);
+        Predicate condition = cb.equal(
+                root.get("studentClassSubjectId").get("classSubjectId").get("id"),
+                classSubjectId
+        );
+
         q.where(condition);
 
         return s.createQuery(q).getResultList();
@@ -179,5 +184,18 @@ public class ScoreRepositoryImply implements ScoreRepository {
         for (Score s : scores) {
             session.merge(s);
         }
+    }
+
+    @Override
+    public List<Score> getScoresByStudentId(int studentId) {
+        Session s = this.factory.getObject().getCurrentSession();
+        CriteriaBuilder cb = s.getCriteriaBuilder();
+        CriteriaQuery<Score> cq = cb.createQuery(Score.class);
+        Root<Score> root = cq.from(Score.class);
+        cq.select(root);
+
+        Predicate condition = cb.equal(root.get("studentClassSubjectId").get("studentId").get("id"),studentId); 
+        cq.where(condition);
+        return s.createQuery(cq).getResultList();
     }
 }

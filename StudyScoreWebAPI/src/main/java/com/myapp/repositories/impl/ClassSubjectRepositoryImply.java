@@ -130,4 +130,18 @@ public class ClassSubjectRepositoryImply implements ClassSubjectRepository {
         return session.createQuery(cq).getSingleResult();
     }
 
+    @Override
+    public List<ClassSubject> getClassSubjectsByLecturerId(int lecturerId) {
+        Session s = this.factory.getObject().getCurrentSession();
+        CriteriaBuilder cb = s.getCriteriaBuilder();
+        CriteriaQuery<ClassSubject> q = cb.createQuery(ClassSubject.class);
+        Root<ClassSubject> root = q.from(ClassSubject.class);
+        q.select(root);
+
+        Predicate condition = cb.equal(root.get("lecturerId").get("id"),lecturerId);
+        q.where(condition);
+
+        return s.createQuery(q).getResultList();
+    }
+
 }

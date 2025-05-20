@@ -43,12 +43,20 @@ CREATE TABLE class_subject (
     FOREIGN KEY (subject_id) REFERENCES subject(id),
     FOREIGN KEY (lecturer_id) REFERENCES user(id)
 );
+-- Bảng student_class_subjects: môn học của sinh viên
+CREATE TABLE student_class_subject (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    student_id INT NOT NULL,
+    class_subject_id INT NOT NULL,
+    FOREIGN KEY (student_id) REFERENCES user(id),
+    FOREIGN KEY (class_subject_id) REFERENCES class_subject(id),
+    UNIQUE(student_id, class_subject_id) -- tránh trùng đăng ký
+);
 
 -- Bảng Scores: điểm sinh viên
 CREATE TABLE score (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    student_id INT NOT NULL,
-    class_subject_id INT NOT NULL,
+    student_class_subject_id INT NOT NULL,
     midterm_score FLOAT,
     final_score FLOAT,
     extra_score1 FLOAT,
@@ -56,8 +64,7 @@ CREATE TABLE score (
     extra_score3 FLOAT,
     lock_status ENUM('draft', 'locked') DEFAULT 'draft',
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (student_id) REFERENCES user(id),
-    FOREIGN KEY (class_subject_id) REFERENCES class_subject(id)
+    FOREIGN KEY (student_class_subject_id) REFERENCES student_class_subject(id)
 );
 
 -- Bảng Forum_Posts: bài post trên diễn đàn
@@ -117,14 +124,22 @@ VALUES
 (2, 2,3),
 (2, 3,3);
 
--- Điểm mẫu
-INSERT INTO score (student_id, class_subject_id, midterm_score, final_score, extra_score1, lock_status)
+INSERT INTO student_class_subject (student_id, class_subject_id)
 VALUES 
-(5, 1, 7.5, 8.0, NULL, 'locked'),
-(6, 1, 6.0, 7.0, NULL, 'locked'),
-(7, 1, 8.5, 9.0, NULL, 'locked'),
-(8, 2, 7.0, 7.5, NULL, 'draft'),
-(4, 2, 5.5, 6.0, NULL, 'draft');
+(5, 1),  -- SV002 đăng ký CTDL cho lớp CNTT2021A
+(6, 1),  -- SV003
+(7, 1),  -- SV004
+(8, 2),  -- SV005 đăng ký LTHDT cho lớp CNTT2021A
+(4, 2);  -- SV001
+
+-- Điểm mẫu
+INSERT INTO score (student_class_subject_id, midterm_score, final_score, extra_score1, lock_status)
+VALUES 
+(1, 7.5, 8.0, NULL, 'locked'),
+(2, 6.0, 7.0, NULL, 'locked'),
+(3, 8.5, 9.0, NULL, 'locked'),
+(4, 7.0, 7.5, NULL, 'draft'),
+(5, 5.5, 6.0, NULL, 'draft');
 
 -- Forum Posts
 INSERT INTO forum_post (title, content, author_id)

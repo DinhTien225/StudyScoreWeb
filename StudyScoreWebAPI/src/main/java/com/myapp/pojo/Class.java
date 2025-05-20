@@ -99,7 +99,13 @@ public class Class implements Serializable {
         this.code = code;
     }
 
-    
+    public User getLecturerId() {
+        return lecturerId;
+    }
+
+    public void setLecturerId(User lecturerId) {
+        this.lecturerId = lecturerId;
+    }
 
     public Set<User> getUserSet() {
         return userSet;
@@ -141,21 +147,5 @@ public class Class implements Serializable {
     public String toString() {
         return "com.myapp.pojo.Class[ id=" + id + " ]";
     }
-
-    /**
-     * @return the lecturerId
-     */
-    public User getLecturerId() {
-        return lecturerId;
-    }
-
-    /**
-     * @param lecturerId the lecturerId to set
-     */
-    public void setLecturerId(User lecturerId) {
-        this.lecturerId = lecturerId;
-    }
-
-    
     
 }

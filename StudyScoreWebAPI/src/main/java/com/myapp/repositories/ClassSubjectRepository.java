@@ -18,4 +18,5 @@ public interface ClassSubjectRepository {
     ClassSubject addOrUpdateClassSubject(ClassSubject cs);
     void deleleClassSubject(int id);
     long countClassSubjects(Map<String, String> params);
+    List<ClassSubject> getClassSubjectsByLecturerId(int lecturerId);
 }

@@ -9,5 +9,6 @@
     <class>com.myapp.pojo.ForumPost</class>
     <class>com.myapp.pojo.ForumComment</class>
     <class>com.myapp.pojo.Class</class>
+    <class>com.myapp.pojo.StudentClassSubject</class>
   </persistence-unit>
 </persistence>

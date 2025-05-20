@@ -1,6 +1,7 @@
 package com.myapp.controllers;
 
 import com.myapp.services.ClassSubjectService;
+import com.myapp.pojo.ClassSubject;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,13 +36,20 @@ public class ApiClassSubjectController {
     
     // api/classSubjects – Danh sách môn học 
     @GetMapping("/classSubjects")
-    public ResponseEntity<List<com.myapp.pojo.ClassSubject>> listClassSubjects(@RequestParam Map<String, String> params) {
+    public ResponseEntity<List<ClassSubject>> listClassSubjects(@RequestParam Map<String, String> params) {
         return new ResponseEntity<>(classSubService.getClassSubjects(params), HttpStatus.OK);
     }
     
     // api/classSubjects/{id} – Chi tiết môn học 
     @GetMapping("/classSubjects/{id}")
-    public ResponseEntity<com.myapp.pojo.ClassSubject> retrieve(@PathVariable(value = "id") int id){
+    public ResponseEntity<ClassSubject> retrieve(@PathVariable(value = "id") int id){
         return new ResponseEntity<>(classSubService.getClassSubjectById(id), HttpStatus.OK);
     }
+    
+    // api//classSubjects/lecturer/{lecturerId} – Chi tiết 
+    @GetMapping("/classSubjects/lecturer/{lecturerId}")
+    public ResponseEntity<List<ClassSubject>> listClassSubjectsByLecturerId(@PathVariable(value = "lecturerId") int lecturerId){
+        return new ResponseEntity<>(classSubService.getClassSubjectsByLecturerId(lecturerId), HttpStatus.OK);
+    }
+    
 }

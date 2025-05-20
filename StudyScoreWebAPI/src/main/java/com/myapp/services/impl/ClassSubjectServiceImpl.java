@@ -46,5 +46,9 @@ public class ClassSubjectServiceImpl implements ClassSubjectService{
     public long countClassSubjects(Map<String, String> params) {
         return this.classSubRepo.countClassSubjects(params);
     }
-    
+
+    @Override
+    public List<ClassSubject> getClassSubjectsByLecturerId(int lecturerId) {
+        return this.classSubRepo.getClassSubjectsByLecturerId(lecturerId);
+    }
 }

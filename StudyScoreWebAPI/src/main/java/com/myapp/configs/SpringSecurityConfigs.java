@@ -31,7 +31,7 @@ import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
  *
  * @author ADMIN
  */
-@EnableMethodSecurity(prePostEnabled = true)
+@EnableMethodSecurity
 @Configuration
 @EnableWebSecurity
 @EnableTransactionManagement
@@ -52,7 +52,7 @@ public class SpringSecurityConfigs {
         http.cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/").hasRole("ADMIN")
+                .requestMatchers("/").authenticated()
                 .requestMatchers("/api/**").permitAll()
                 .anyRequest().authenticated()
                 )
@@ -67,14 +67,14 @@ public class SpringSecurityConfigs {
                 .logoutSuccessUrl("/login")
                 .deleteCookies("JSESSIONID")
                 .permitAll()
-                )
-                .exceptionHandling(exception -> exception
-                .accessDeniedHandler((request, response, accessDeniedException) -> {
-                    // logout user khi bị deny
-                    request.getSession().invalidate();
-                    response.sendRedirect("/login?accessDenied");
-                })
                 );
+//                .exceptionHandling(exception -> exception
+//                .accessDeniedHandler((request, response, accessDeniedException) -> {
+//                    // logout user khi bị deny
+//                    request.getSession().invalidate();
+//                    response.sendRedirect("/login?accessDenied");
+//                })
+//                );
      
         return http.build();
     }

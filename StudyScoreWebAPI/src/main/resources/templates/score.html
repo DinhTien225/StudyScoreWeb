@@ -60,8 +60,8 @@
             <tbody>
                 <tr th:each="s, iterStat : ${scores}">
                     <td th:text="${iterStat.count}"></td>
-                    <td th:text="${s.studentId.firstName + ' ' + s.studentId.lastName}"></td>
-                    <td th:text="${s.classSubjectId.subjectId.subjectName}"></td>
+                    <td th:text="${s.studentClassSubjectId.studentId.firstName + ' ' + s.studentClassSubjectId.studentId.lastName}"></td>
+                    <td th:text="${s.studentClassSubjectId.classSubjectId.subjectId.subjectName}"></td>
                     <td th:text="${s.midtermScore}"></td>
                     <td th:text="${s.finalScore}"></td>
                     <td th:text="${s.extraScore1}"></td>
@@ -76,8 +76,7 @@
                         </button>
                         <button class="btn btn-success"
                                 th:attr="data-id=${s.id},
-                                data-student-id=${s.studentId.id},
-                                data-class-subject-id=${s.classSubjectId.id},
+                                data-student-class-subject-id=${s.studentClassSubjectId.id},
                                 data-midterm-score=${s.midtermScore},
                                 data-final-score=${s.finalScore},
                                 data-extra1=${s.extraScore1},
@@ -86,11 +85,12 @@
                                 data-lock-status=${s.lockStatus}"
                                 data-bs-toggle="modal"
                                 data-bs-target="#editScoreModal"
-                                th:onclick="populateEditScoreModal(this)">
+                                onclick="populateEditScoreModal(this)">
                             &#128736;
                         </button>
                     </td>
                 </tr>
+
             </tbody>
         </table>
 
@@ -122,17 +122,13 @@
                     </div>
                     <div class="modal-body">
                         <div class="mb-3">
-                            <label class="form-label">Sinh viên</label>
-                            <select name="studentId" class="form-select" required>
-                                <option value="" disabled selected>Chọn sinh viên</option>
-                                <option th:each="s : ${students}" th:value="${s.id}" th:text="${s.firstName + ' ' + s.lastName}"></option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Môn học</label>
-                            <select name="classSubjectId" class="form-select" required>
-                                <option value="" disabled selected>Chọn môn học</option>
-                                <option th:each="cs : ${classSubjects}" th:value="${cs.id}" th:text="${cs.subjectId.subjectName}"></option>
+                            <label class="form-label">Sinh viên - Môn học</label>
+                            <select name="studentClassSubjectId" class="form-select" required>
+                                <option value="" disabled selected>Chọn sinh viên - môn học</option>
+                                <option th:each="scs : ${studentClassSubjects}" 
+                                        th:value="${scs.id}" 
+                                        th:text="${scs.studentId.firstName + ' ' + scs.studentId.lastName + ' - ' + scs.classSubjectId.subjectId.subjectName}">
+                                </option>
                             </select>
                         </div>
                         <div class="row">
@@ -186,19 +182,16 @@
                     </div>
                     <div class="modal-body">
                         <div class="mb-3">
-                            <label class="form-label">Sinh viên</label>
-                            <select id="edit-studentId" name="studentId" class="form-select" required>
-                                <option value="" disabled selected>Chọn sinh viên</option>
-                                <option th:each="s : ${students}" th:value="${s.id}" th:text="${s.firstName + ' ' + s.lastName}"></option>
+                            <label for="edit-studentClassSubjectId" class="form-label">Sinh viên - Môn học</label>
+                            <select id="edit-studentClassSubjectId" name="studentClassSubjectId" class="form-select" required>
+                                <option value="" disabled selected>Chọn sinh viên - môn học</option>
+                                <option th:each="scs : ${studentClassSubjects}" 
+                                        th:value="${scs.id}" 
+                                        th:text="${scs.studentId.firstName + ' ' + scs.studentId.lastName + ' - ' + scs.classSubjectId.subjectId.subjectName}">
+                                </option>
                             </select>
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label">Môn học</label>
-                            <select id="edit-class-subjectId" name="classSubjectId" class="form-select" required>
-                                <option value="" disabled selected>Chọn môn học</option>
-                                <option th:each="cs : ${classSubjects}" th:value="${cs.id}" th:text="${cs.subjectId.subjectName}"></option>
-                            </select>
-                        </div>
+
                         <div class="row">
                             <div class="col mb-3">
                                 <label class="form-label">Giữa kỳ</label>

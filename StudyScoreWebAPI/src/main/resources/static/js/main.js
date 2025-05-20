@@ -66,8 +66,7 @@ function populateEditClassSubjectModal(button) {
 }
 function populateEditScoreModal(button) {
     const id = button.getAttribute('data-id');
-    const studentId = button.getAttribute('data-student-id');
-    const classSubjectId = button.getAttribute('data-class-subject-id');
+    const studentClassSubjectId = button.getAttribute('data-student-class-subject-id'); // Gộp 2 thành 1
     const midtermScore = button.getAttribute('data-midterm-score');
     const finalScore = button.getAttribute('data-final-score');
     const extra1 = button.getAttribute('data-extra1');
@@ -76,15 +75,26 @@ function populateEditScoreModal(button) {
     const lockStatus = button.getAttribute('data-lock-status');
 
     document.getElementById('edit-id').value = id;
-    document.getElementById('edit-studentId').value = studentId;
-    document.getElementById('edit-class-subjectId').value = classSubjectId;
+
+    // Gán cho select Sinh viên - Môn học
+    const studentClassSubjectSelect = document.getElementById('edit-studentClassSubjectId');
+    if (studentClassSubjectSelect) {
+        studentClassSubjectSelect.value = studentClassSubjectId;
+    }
+
+    // Gán giá trị điểm
     document.getElementById('edit-midterm-score').value = midtermScore;
     document.getElementById('edit-final-score').value = finalScore;
     document.getElementById('edit-extra1').value = extra1;
     document.getElementById('edit-extra2').value = extra2;
     document.getElementById('edit-extra3').value = extra3;
-    document.getElementById('edit-lock-status').value = lockStatus;
 
-    // Cập nhật action cho form nếu cần gửi đúng đến từng bản ghi
+    // Gán trạng thái khóa cho select
+    const lockStatusSelect = document.getElementById('edit-lock-status');
+    if (lockStatusSelect) {
+        lockStatusSelect.value = lockStatus;
+    }
+
+    // Cập nhật action của form
     document.getElementById('editScoreForm').action = '/StudyScoreWebAPI/scores/' + id;
 }

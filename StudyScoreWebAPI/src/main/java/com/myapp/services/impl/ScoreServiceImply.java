@@ -70,4 +70,9 @@ public class ScoreServiceImply implements ScoreService {
 //        }
     }
 
+    @Override
+    public List<Score> getScoresByStudentId(int studentId) {
+        return this.scoreRepo.getScoresByStudentId(studentId);
+    }
+
 }

@@ -26,11 +26,11 @@ import java.util.Set;
  * @author ADMIN
  */
 @Entity
-@Table(name = "class_subject")
+@Table(name = "student_class_subject")
 @NamedQueries({
-    @NamedQuery(name = "ClassSubject.findAll", query = "SELECT c FROM ClassSubject c"),
-    @NamedQuery(name = "ClassSubject.findById", query = "SELECT c FROM ClassSubject c WHERE c.id = :id")})
-public class ClassSubject implements Serializable {
+    @NamedQuery(name = "StudentClassSubject.findAll", query = "SELECT s FROM StudentClassSubject s"),
+    @NamedQuery(name = "StudentClassSubject.findById", query = "SELECT s FROM StudentClassSubject s WHERE s.id = :id")})
+public class StudentClassSubject implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -39,22 +39,19 @@ public class ClassSubject implements Serializable {
     @Column(name = "id")
     private Integer id;
     @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "classSubjectId")
-    private Set<StudentClassSubject> studentClassSubjectSet;
-    @JoinColumn(name = "class_id", referencedColumnName = "id")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "studentClassSubjectId")
+    private Set<Score> scoreSet;
+    @JoinColumn(name = "class_subject_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private Class classId;
-    @JoinColumn(name = "subject_id", referencedColumnName = "id")
+    private ClassSubject classSubjectId;
+    @JoinColumn(name = "student_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private Subject subjectId;
-    @JoinColumn(name = "lecturer_id", referencedColumnName = "id")
-    @ManyToOne
-    private User lecturerId;
+    private User studentId;
 
-    public ClassSubject() {
+    public StudentClassSubject() {
     }
 
-    public ClassSubject(Integer id) {
+    public StudentClassSubject(Integer id) {
         this.id = id;
     }
 
@@ -66,36 +63,28 @@ public class ClassSubject implements Serializable {
         this.id = id;
     }
 
-    public Set<StudentClassSubject> getStudentClassSubjectSet() {
-        return studentClassSubjectSet;
+    public Set<Score> getScoreSet() {
+        return scoreSet;
     }
 
-    public void setStudentClassSubjectSet(Set<StudentClassSubject> studentClassSubjectSet) {
-        this.studentClassSubjectSet = studentClassSubjectSet;
+    public void setScoreSet(Set<Score> scoreSet) {
+        this.scoreSet = scoreSet;
     }
 
-    public Class getClassId() {
-        return classId;
+    public ClassSubject getClassSubjectId() {
+        return classSubjectId;
     }
 
-    public void setClassId(Class classId) {
-        this.classId = classId;
+    public void setClassSubjectId(ClassSubject classSubjectId) {
+        this.classSubjectId = classSubjectId;
     }
 
-    public Subject getSubjectId() {
-        return subjectId;
+    public User getStudentId() {
+        return studentId;
     }
 
-    public void setSubjectId(Subject subjectId) {
-        this.subjectId = subjectId;
-    }
-
-    public User getLecturerId() {
-        return lecturerId;
-    }
-
-    public void setLecturerId(User lecturerId) {
-        this.lecturerId = lecturerId;
+    public void setStudentId(User studentId) {
+        this.studentId = studentId;
     }
 
     @Override
@@ -108,10 +97,10 @@ public class ClassSubject implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof ClassSubject)) {
+        if (!(object instanceof StudentClassSubject)) {
             return false;
         }
-        ClassSubject other = (ClassSubject) object;
+        StudentClassSubject other = (StudentClassSubject) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -120,7 +109,7 @@ public class ClassSubject implements Serializable {
 
     @Override
     public String toString() {
-        return "com.myapp.pojo.ClassSubject[ id=" + id + " ]";
+        return "com.myapp.pojo.StudentClassSubject[ id=" + id + " ]";
     }
     
 }
