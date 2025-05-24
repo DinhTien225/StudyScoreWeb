@@ -19,4 +19,5 @@ public interface StudentClassSubjectService {
     void deleleStudentClassSubject(int id);
     long countStudentClassSubjects(Map<String, String> params);
     List<StudentClassSubject> getStudentClassSubjectsByStudentId(int studentId);
+    List<StudentClassSubject> getStuClassSubjectByClassSubjectId(int classSubjectId);
 }

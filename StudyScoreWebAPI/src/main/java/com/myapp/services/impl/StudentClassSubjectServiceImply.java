@@ -17,8 +17,8 @@ import org.springframework.stereotype.Service;
  * @author ADMIN
  */
 @Service
-public class StudentClassSubjectServiceImply implements StudentClassSubjectService{
-    
+public class StudentClassSubjectServiceImply implements StudentClassSubjectService {
+
     @Autowired
     public StudentClassSubjectRepository stuClassSubRepo;
 
@@ -51,5 +51,10 @@ public class StudentClassSubjectServiceImply implements StudentClassSubjectServi
     public List<StudentClassSubject> getStudentClassSubjectsByStudentId(int studentId) {
         return this.stuClassSubRepo.getStudentClassSubjectsByStudentId(studentId);
     }
-    
+
+    @Override
+    public List<StudentClassSubject> getStuClassSubjectByClassSubjectId(int classSubjectId) {
+        return this.stuClassSubRepo.getStuClassSubjectByClassSubjectId(classSubjectId);
+    }
+
 }

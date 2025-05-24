@@ -27,12 +27,12 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Repository
 @Transactional
-public class StudentClassSubjectRepositoryImply implements StudentClassSubjectRepository{
+public class StudentClassSubjectRepositoryImply implements StudentClassSubjectRepository {
 
     private static final int PAGE_SIZE = 6;
     @Autowired
     private LocalSessionFactoryBean factory;
-    
+
     @Override
     public List<StudentClassSubject> getStudentClassSubjects(Map<String, String> params) {
         Session s = this.factory.getObject().getCurrentSession();
@@ -100,11 +100,24 @@ public class StudentClassSubjectRepositoryImply implements StudentClassSubjectRe
         Root<StudentClassSubject> root = q.from(StudentClassSubject.class);
         q.select(root);
 
-        Predicate condition = cb.equal(root.get("studentId").get("id"),studentId);
+        Predicate condition = cb.equal(root.get("studentId").get("id"), studentId);
         q.where(condition);
 
         return s.createQuery(q).getResultList();
     }
-    
-    
+
+    @Override
+    public List<StudentClassSubject> getStuClassSubjectByClassSubjectId(int classSubjectId) {
+        Session s = this.factory.getObject().getCurrentSession();
+        CriteriaBuilder cb = s.getCriteriaBuilder();
+        CriteriaQuery<StudentClassSubject> q = cb.createQuery(StudentClassSubject.class);
+        Root<StudentClassSubject> root = q.from(StudentClassSubject.class);
+        q.select(root);
+
+        Predicate condition = cb.equal(root.get("classSubjectId").get("id"), classSubjectId);
+        q.where(condition);
+
+        return s.createQuery(q).getResultList();
+    }
+
 }

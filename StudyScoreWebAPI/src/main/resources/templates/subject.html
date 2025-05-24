@@ -26,25 +26,26 @@
             <thead>
                 <tr>
                     <th>STT</th>
+                    <th>Hình ảnh</th>
                     <th>Mã môn</th>
                     <th>Tên môn</th>
                     <th>Số tín chỉ</th>
                     <th>Mô tả</th>
-                    <th>Hình ảnh</th>
                     <th>Chỉnh sửa</th>
                 </tr>
             </thead>
             <tbody>
                 <tr th:each="s, iterStat : ${subjects}">
                     <td th:text="${iterStat.count}"></td>
-                    <td th:text="${s.subjectCode}"></td>
-                    <td th:text="${s.subjectName}"></td>
-                    <td th:text="${s.credits}"></td>
-                    <td th:text="${s.description}"></td>
                     <td>
                         <img th:src="${s.imageUrl}" alt="Ảnh môn học" style="width: 100px; height: auto;" th:if="${s.imageUrl != null}" />
                         <span th:if="${s.imageUrl == null}">Không có ảnh</span>
                     </td>
+                    <td th:text="${s.subjectCode}"></td>
+                    <td th:text="${s.subjectName}"></td>
+                    <td th:text="${s.credits}"></td>
+                    <td th:text="${s.description}"></td>
+                    
                     <td>
                         <button class="btn btn-danger" th:onclick="'deleteObject(\''+@{/api/subjects/}+'\','+${s.id}+')'">&#128465;</button>
                         <button class="btn btn-success"
