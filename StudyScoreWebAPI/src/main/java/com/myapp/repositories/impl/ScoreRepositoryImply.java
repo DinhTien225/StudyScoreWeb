@@ -194,8 +194,22 @@ public class ScoreRepositoryImply implements ScoreRepository {
         Root<Score> root = cq.from(Score.class);
         cq.select(root);
 
-        Predicate condition = cb.equal(root.get("studentClassSubjectId").get("studentId").get("id"),studentId); 
+        Predicate condition = cb.equal(root.get("studentClassSubjectId").get("studentId").get("id"), studentId);
         cq.where(condition);
         return s.createQuery(cq).getResultList();
+    }
+
+    @Override
+    public Score getScoreByStuClassSubjectId(int stuClassSubjectId) {
+        Session s = this.factory.getObject().getCurrentSession();
+        CriteriaBuilder cb = s.getCriteriaBuilder();
+        CriteriaQuery<Score> cq = cb.createQuery(Score.class);
+        Root<Score> root = cq.from(Score.class);
+        cq.select(root);
+
+        Predicate condition = cb.equal(root.get("studentClassSubjectId").get("id"), stuClassSubjectId);
+        cq.where(condition);
+
+        return s.createQuery(cq).uniqueResult();
     }
 }

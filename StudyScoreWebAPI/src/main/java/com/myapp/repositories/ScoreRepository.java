@@ -21,4 +21,5 @@ public interface ScoreRepository {
     List<Score> getScoresByClassSubjectId(int classSubjectId);
     void saveAll(List<Score> scores);
     List<Score> getScoresByStudentId(int studentId);
+    Score getScoreByStuClassSubjectId(int stuClassSubjectId);
 }

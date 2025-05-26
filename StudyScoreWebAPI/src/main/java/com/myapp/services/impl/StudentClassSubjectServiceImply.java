@@ -57,4 +57,9 @@ public class StudentClassSubjectServiceImply implements StudentClassSubjectServi
         return this.stuClassSubRepo.getStuClassSubjectByClassSubjectId(classSubjectId);
     }
 
+    @Override
+    public StudentClassSubject getByStuCodeAndClassSubjectId(String studentCode, int classSubjectId) {
+        return this.stuClassSubRepo.getByStuCodeAndClassSubjectId(studentCode, classSubjectId);
+    }
+
 }

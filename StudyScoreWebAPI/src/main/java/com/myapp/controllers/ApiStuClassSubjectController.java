@@ -88,7 +88,7 @@ public class ApiStuClassSubjectController {
         int rowIdx = 1;
         for (StudentClassSubject scs : list) {
             Row row = sheet.createRow(rowIdx++);
-            row.createCell(0).setCellValue(rowIdx);
+            row.createCell(0).setCellValue(rowIdx-1);
             row.createCell(1).setCellValue(scs.getStudentId().getStudentCode());
             row.createCell(2).setCellValue(scs.getStudentId().getFirstName() + " " + scs.getStudentId().getLastName());
             row.createCell(3).setCellValue(""); 

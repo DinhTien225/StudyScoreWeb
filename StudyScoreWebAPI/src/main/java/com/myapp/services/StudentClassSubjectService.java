@@ -20,4 +20,5 @@ public interface StudentClassSubjectService {
     long countStudentClassSubjects(Map<String, String> params);
     List<StudentClassSubject> getStudentClassSubjectsByStudentId(int studentId);
     List<StudentClassSubject> getStuClassSubjectByClassSubjectId(int classSubjectId);
+    StudentClassSubject getByStuCodeAndClassSubjectId(String studentCode, int classSubjectId);
 }

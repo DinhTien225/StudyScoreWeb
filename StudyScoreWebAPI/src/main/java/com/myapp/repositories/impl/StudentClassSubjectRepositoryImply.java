@@ -120,4 +120,19 @@ public class StudentClassSubjectRepositoryImply implements StudentClassSubjectRe
         return s.createQuery(q).getResultList();
     }
 
+    @Override
+    public StudentClassSubject getByStuCodeAndClassSubjectId(String studentCode, int classSubjectId) {
+        Session s = this.factory.getObject().getCurrentSession();
+        CriteriaBuilder cb = s.getCriteriaBuilder();
+        CriteriaQuery<StudentClassSubject> cq = cb.createQuery(StudentClassSubject.class);
+        Root<StudentClassSubject> root = cq.from(StudentClassSubject.class);
+        cq.select(root);
+
+        Predicate p1 = cb.equal(root.get("studentId").get("studentCode"), studentCode);
+        Predicate p2 = cb.equal(root.get("classSubjectId").get("id"), classSubjectId);
+        cq.where(cb.and(p1, p2));
+
+        return s.createQuery(cq).uniqueResult();
+    }
+
 }

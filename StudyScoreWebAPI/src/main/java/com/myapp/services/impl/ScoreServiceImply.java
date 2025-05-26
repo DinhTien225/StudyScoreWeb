@@ -75,4 +75,9 @@ public class ScoreServiceImply implements ScoreService {
         return this.scoreRepo.getScoresByStudentId(studentId);
     }
 
+    @Override
+    public Score getScoreByStuClassSubjectId(int stuClassSubjectId) {
+        return this.scoreRepo.getScoreByStuClassSubjectId(stuClassSubjectId);
+    }
+
 }

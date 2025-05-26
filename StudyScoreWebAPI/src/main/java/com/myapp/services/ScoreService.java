@@ -21,4 +21,5 @@ public interface ScoreService {
     List<Score> getScoresByClassSubjectId(int classSubjectId);
     void lockScoresByClassSubjectId(int classSubjectId);
     List<Score> getScoresByStudentId(int studentId);
+    Score getScoreByStuClassSubjectId(int stuClassSubjectId);
 }
