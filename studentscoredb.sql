@@ -97,11 +97,12 @@ VALUES
 ('Nguyen Van', 'A', 'A.NguyenVan@ou.edu.vn', '$2a$10$5X9k5N1sTc1/CjVH5XJoje3QMYijH3ETpgkox00R0MdPaJPPrf7wO', 'ROLE_ADMIN', NULL, NULL, NULL),
 ('Tran Thi', 'B', 'B.TranThi@ou.edu.vn', '$2a$10$5X9k5N1sTc1/CjVH5XJoje3QMYijH3ETpgkox00R0MdPaJPPrf7wO', 'ROLE_LECTURER', NULL, NULL, 'GV001'),
 ('Le Van', 'C', 'C.LeVan@ou.edu.vn', '$2a$10$5X9k5N1sTc1/CjVH5XJoje3QMYijH3ETpgkox00R0MdPaJPPrf7wO', 'ROLE_LECTURER', NULL, NULL, 'GV002'),
-('Ho Phan', 'D', 'D.HoPhan@ou.edu.vn', '$2a$10$5X9k5N1sTc1/CjVH5XJoje3QMYijH3ETpgkox00R0MdPaJPPrf7wO', 'ROLE_STUDENT', NULL, 'SV001', NULL),
+('Mai Thị Hồng', 'Duy', '2251012047duy@ou.edu.vn', '$2a$10$5X9k5N1sTc1/CjVH5XJoje3QMYijH3ETpgkox00R0MdPaJPPrf7wO', 'ROLE_STUDENT', NULL, '2251012047', NULL),
 ('Pham Thi', 'E', 'E.PhamThi@ou.edu.vn','$2a$10$5X9k5N1sTc1/CjVH5XJoje3QMYijH3ETpgkox00R0MdPaJPPrf7wO', 'ROLE_STUDENT', NULL, 'SV002', NULL),
 ('Phan Thi', 'F', 'F.PhanThi@ou.edu.vn','$2a$10$5X9k5N1sTc1/CjVH5XJoje3QMYijH3ETpgkox00R0MdPaJPPrf7wO', 'ROLE_STUDENT', NULL, 'SV003', NULL),
 ('Le Tran', 'H', 'H.LeTran@ou.edu.vn', '$2a$10$5X9k5N1sTc1/CjVH5XJoje3QMYijH3ETpgkox00R0MdPaJPPrf7wO', 'ROLE_STUDENT', NULL, 'SV004', NULL),
-('Truong Ho', 'K', 'K.TruongHo@ou.edu.vn', '$2a$10$5X9k5N1sTc1/CjVH5XJoje3QMYijH3ETpgkox00R0MdPaJPPrf7wO', 'ROLE_STUDENT', NULL, 'SV005', NULL);
+('Truong Ho', 'K', 'K.TruongHo@ou.edu.vn', '$2a$10$5X9k5N1sTc1/CjVH5XJoje3QMYijH3ETpgkox00R0MdPaJPPrf7wO', 'ROLE_STUDENT', NULL, 'SV005', NULL),
+('Đinh Bích', 'Tiên', '2251012132tien@ou.edu.vn', '$2a$10$5X9k5N1sTc1/CjVH5XJoje3QMYijH3ETpgkox00R0MdPaJPPrf7wO', 'ROLE_STUDENT', NULL, '2251012132', NULL);
 
 -- Insert vào Classes 
 INSERT INTO class (name,code,lecturer_id)
@@ -130,16 +131,18 @@ VALUES
 (6, 1),  -- SV003
 (7, 1),  -- SV004
 (8, 2),  -- SV005 đăng ký LTHDT cho lớp CNTT2021A
-(4, 2);  -- SV001
+(4, 2),  -- SV001
+(9,2);
 
 -- Điểm mẫu
 INSERT INTO score (student_class_subject_id, midterm_score, final_score, extra_score1, lock_status)
 VALUES 
-(1, 7.5, 8.0, NULL, 'locked'),
-(2, 6.0, 7.0, NULL, 'locked'),
-(3, 8.5, 9.0, NULL, 'locked'),
+(1, 7.5, 8.0, NULL, 'draft'),
+(2, 6.0, 7.0, NULL, 'draft'),
+(3, 8.5, 9.0, NULL, 'draft'),
 (4, 7.0, 7.5, NULL, 'draft'),
-(5, 5.5, 6.0, NULL, 'draft');
+(5, 5.5, 6.0, NULL, 'draft'),
+(6, 8, 8, NULL, 'draft');
 
 -- Forum Posts
 INSERT INTO forum_post (title, content, author_id)

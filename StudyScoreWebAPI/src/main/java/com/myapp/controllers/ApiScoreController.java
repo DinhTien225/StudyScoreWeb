@@ -103,6 +103,12 @@ public class ApiScoreController {
         this.scoreService.addOrUpdateScore(sc);
     }
 
+    // chi tiết điểm của từng môn học của học sinh
+    @GetMapping("/scores/stuClassSubject/{studentClassSubjectId}")
+    public ResponseEntity<Score> getScoreByStuClassSubjectId(@PathVariable(value = "studentClassSubjectId") int studentClassSubjectId) {
+        return new ResponseEntity<>(scoreService.getScoreByStuClassSubjectId(studentClassSubjectId), HttpStatus.OK);
+    }
+    
     // Lấy danh sách điểm theo classSubjectId
     @GetMapping("/scores/classSubject/{classSubjectId}")
     public ResponseEntity<List<Score>> getScoresByClassSubjectId(@PathVariable(value = "classSubjectId") int classSubjectId) {

@@ -5,7 +5,9 @@
 package com.myapp.services.impl;
 
 import com.myapp.pojo.Score;
+import com.myapp.pojo.User;
 import com.myapp.repositories.ScoreRepository;
+import com.myapp.services.EmailService;
 import com.myapp.services.ScoreService;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -22,6 +24,9 @@ public class ScoreServiceImply implements ScoreService {
 
     @Autowired
     public ScoreRepository scoreRepo;
+    
+    @Autowired
+    public EmailService emailService;
 
     @Override
     public List<Score> getScores(Map<String, String> params) {
@@ -58,26 +63,47 @@ public class ScoreServiceImply implements ScoreService {
         List<Score> scores = scoreRepo.getScoresByClassSubjectId(classSubjectId);
 
         for (Score s : scores) {
-            s.setLockStatus("locked");  
+            s.setLockStatus("locked");
         }
 
         this.scoreRepo.saveAll(scores);
+        for (Score s : scores) {
+            User student = s.getStudentClassSubjectId().getStudentId();
+            String email = student.getEmail();
+            String fullName = student.getFirstName() + " " + student.getLastName();
+            
+            String subjectName = s.getStudentClassSubjectId()
+                                  .getClassSubjectId()
+                                  .getSubjectId()
+                                  .getSubjectName();
 
-//        // (Tùy chọn) Gửi email cho sinh viên thông báo điểm đã được khóa
-//        for (Score s : scores) {
-//            String email = s.getStudentId().getEmail(); // nếu có getEmail()
-//            // Gửi email tại đây, dùng service hoặc tạo async queue
-//        }
+            
+            if (email != null && !email.isEmpty()) {
+                String subject = "Thông báo điểm môn học";
+                String body = "Chào " + fullName + ",\n\n"
+                        + "Giảng viên đã khóa điểm môn học " + subjectName + " của bạn.\n"
+                        + "Hãy đăng nhập hệ thống để xem chi tiết.\n\n"
+                        + "Trân trọng.";
+
+                emailService.sendEmail(email, subject, body);
+            }
+        }
     }
 
-    @Override
-    public List<Score> getScoresByStudentId(int studentId) {
+        @Override
+        public List<Score> getScoresByStudentId
+        (int studentId
+        
+            ) {
         return this.scoreRepo.getScoresByStudentId(studentId);
-    }
+        }
 
-    @Override
-    public Score getScoreByStuClassSubjectId(int stuClassSubjectId) {
+        @Override
+        public Score getScoreByStuClassSubjectId
+        (int stuClassSubjectId
+        
+            ) {
         return this.scoreRepo.getScoreByStuClassSubjectId(stuClassSubjectId);
-    }
+        }
 
-}
+    }
