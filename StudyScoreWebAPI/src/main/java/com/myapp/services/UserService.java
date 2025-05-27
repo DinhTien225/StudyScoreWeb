@@ -20,4 +20,5 @@ public interface UserService extends UserDetailsService{
     boolean authenticate(String email, String password);
     List<User> getUsersByRole(String role);
     User getUserById(int id);
+    User addLecturer(Map<String, String> params, MultipartFile avatar);
 }

@@ -1,0 +1,52 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Thêm giảng viên</title>
+    <th:block th:replace="base :: bootstrap"></th:block>
+</head>
+<body>
+    <div th:replace="base :: header"></div>
+
+    <main class="container mt-4">
+        <h2 class="text-primary mb-4">Thêm giảng viên mới</h2>
+
+        <form th:action="@{/createLecturer/add}" method="post" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label for="first_name" class="form-label">Họ</label>
+                <input type="text" class="form-control" id="first_name" name="first_name" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="last_name" class="form-label">Tên</label>
+                <input type="text" class="form-control" id="last_name" name="last_name" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" name="email" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="password" class="form-label">Mật khẩu</label>
+                <input type="password" class="form-control" id="password" name="password" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="lecturer_code" class="form-label">Mã giảng viên</label>
+                <input type="text" class="form-control" id="lecturer_code" name="lecturer_code" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="avatar" class="form-label">Ảnh đại diện</label>
+                <input type="file" class="form-control" id="avatar" name="avatar" accept="image/*">
+            </div>
+
+            <button type="submit" class="btn btn-primary">Thêm giảng viên</button>
+            <a th:href="@{/createLecturer}" class="btn btn-secondary">Hủy</a>
+        </form>
+    </main>
+
+    <div th:replace="base :: footer"></div>
+</body>
+</html>

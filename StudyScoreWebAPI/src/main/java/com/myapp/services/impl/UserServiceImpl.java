@@ -74,7 +74,6 @@ public class UserServiceImpl implements UserService {
         u.setPassword(this.passwordEncoder.encode(params.get("password")));
         u.setRole("ROLE_STUDENT");
         u.setStudentCode(params.get("student_code"));
-        u.setLecturerCode(params.get("lecturer_code"));
         
         String classIdStr = params.get("class_id");
         if (classIdStr != null && !classIdStr.isEmpty()) {
@@ -84,6 +83,28 @@ public class UserServiceImpl implements UserService {
                 u.setClassId(c);
             }
         }
+        
+        if (!avatar.isEmpty()) {
+            try {
+                Map res = cloudinary.uploader().upload(avatar.getBytes(), ObjectUtils.asMap("resource_type", "auto"));
+                u.setAvatarUrl(res.get("secure_url").toString());
+            } catch (IOException ex) {
+                Logger.getLogger(UserServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+        return this.userRepo.addUser(u);
+    }
+    
+    @Override
+    public User addLecturer(Map<String, String> params, MultipartFile avatar) {
+        User u = new User();
+        u.setFirstName(params.get("first_name"));
+        u.setLastName(params.get("last_name"));
+        u.setEmail(params.get("email"));
+        u.setPassword(this.passwordEncoder.encode(params.get("password")));
+        u.setRole("ROLE_LECTURER");
+        u.setLecturerCode(params.get("lecturer_code"));
         
         if (!avatar.isEmpty()) {
             try {
