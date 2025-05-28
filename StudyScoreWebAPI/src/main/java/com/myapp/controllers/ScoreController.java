@@ -54,7 +54,6 @@ public class ScoreController {
     @PostMapping("/scores/add")
     public String add(@ModelAttribute(value = "score") Score sc) {
         this.scoreService.addOrUpdateScore(sc);
-
         return "score";
     }
 

@@ -53,7 +53,8 @@
                                 data-subjectCode=${s.subjectCode}, 
                                 data-subjectName=${s.subjectName}, 
                                 data-credits=${s.credits}, 
-                                data-description=${s.description}"
+                                data-description=${s.description},
+                                data-image=${s.imageUrl}"
                                 data-bs-toggle="modal"
                                 data-bs-target="#editSubjectModal"
                                 onclick="populateSubjectEditModal(this)">
@@ -149,6 +150,12 @@
                             <div class="mb-3">
                                 <label for="edit-description" class="form-label">Mô tả</label>
                                 <textarea class="form-control" id="edit-description" name="description"></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <input type="hidden" name="oldImage" id="edit-oldImage" value="">
+                                <label class="form-label">Ảnh hiện tại</label><br>
+                                <img id="current-avatar" src="" alt="Avatar hiện tại" style="max-width: 120px; border-radius: 10px;">
+                                
                             </div>
                             <div class="mb-3">
                                 <label for="edit-file" class="form-label">Hình ảnh</label>

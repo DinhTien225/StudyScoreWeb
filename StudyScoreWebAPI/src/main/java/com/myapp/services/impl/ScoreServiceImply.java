@@ -24,7 +24,7 @@ public class ScoreServiceImply implements ScoreService {
 
     @Autowired
     public ScoreRepository scoreRepo;
-    
+
     @Autowired
     public EmailService emailService;
 
@@ -71,13 +71,12 @@ public class ScoreServiceImply implements ScoreService {
             User student = s.getStudentClassSubjectId().getStudentId();
             String email = student.getEmail();
             String fullName = student.getFirstName() + " " + student.getLastName();
-            
-            String subjectName = s.getStudentClassSubjectId()
-                                  .getClassSubjectId()
-                                  .getSubjectId()
-                                  .getSubjectName();
 
-            
+            String subjectName = s.getStudentClassSubjectId()
+                    .getClassSubjectId()
+                    .getSubjectId()
+                    .getSubjectName();
+
             if (email != null && !email.isEmpty()) {
                 String subject = "Thông báo điểm môn học";
                 String body = "Chào " + fullName + ",\n\n"
@@ -90,20 +89,16 @@ public class ScoreServiceImply implements ScoreService {
         }
     }
 
-        @Override
-        public List<Score> getScoresByStudentId
-        (int studentId
-        
-            ) {
+    @Override
+    public List<Score> getScoresByStudentId(int studentId
+    ) {
         return this.scoreRepo.getScoresByStudentId(studentId);
-        }
-
-        @Override
-        public Score getScoreByStuClassSubjectId
-        (int stuClassSubjectId
-        
-            ) {
-        return this.scoreRepo.getScoreByStuClassSubjectId(stuClassSubjectId);
-        }
-
     }
+
+    @Override
+    public Score getScoreByStuClassSubjectId(int stuClassSubjectId
+    ) {
+        return this.scoreRepo.getScoreByStuClassSubjectId(stuClassSubjectId);
+    }
+
+}

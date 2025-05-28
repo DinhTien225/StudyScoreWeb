@@ -125,6 +125,13 @@ VALUES
 (2, 2,3),
 (2, 3,3);
 
+UPDATE user SET class_id = 1 WHERE student_code = '2251012047';
+UPDATE user SET class_id = 1 WHERE student_code = 'SV002';
+UPDATE user SET class_id = 1 WHERE student_code = 'SV003';
+UPDATE user SET class_id = 2 WHERE student_code = 'SV004';
+UPDATE user SET class_id = 2 WHERE student_code = 'SV005';
+UPDATE user SET class_id = 2 WHERE student_code = '2251012132';
+
 INSERT INTO student_class_subject (student_id, class_subject_id)
 VALUES 
 (5, 1),  -- SV002 đăng ký CTDL cho lớp CNTT2021A

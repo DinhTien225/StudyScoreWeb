@@ -17,12 +17,16 @@ function populateSubjectEditModal(button) {
     const subjectName = button.getAttribute("data-subjectName");
     const credits = button.getAttribute("data-credits");
     const description = button.getAttribute("data-description");
+    const image = button.getAttribute("data-image");
 
     document.getElementById("edit-id").value = id;
     document.getElementById("edit-subjectCode").value = subjectCode;
     document.getElementById("edit-subjectName").value = subjectName;
     document.getElementById("edit-credits").value = credits;
     document.getElementById("edit-description").value = description;
+    document.getElementById("current-avatar").src = image;
+    document.getElementById("edit-oldImage").value = image;
+
 
     // Gán action cho form: /subjects/{id}
     document.getElementById("editSubjectForm").action = "/StudyScoreWebAPI/subjects/" + id;
@@ -97,4 +101,32 @@ function populateEditScoreModal(button) {
 
     // Cập nhật action của form
     document.getElementById('editScoreForm').action = '/StudyScoreWebAPI/scores/' + id;
+}
+
+function populateEditUserModal(button) {
+    const id = button.getAttribute('data-id');
+    const firstName = button.getAttribute('data-first-name');
+    const lastName = button.getAttribute('data-last-name');
+    const email = button.getAttribute('data-email');
+    const studentCode = button.getAttribute('data-student-code');
+    const lecturerCode = button.getAttribute('data-lecturer-code');
+    const role = button.getAttribute('data-role');
+    const active = button.getAttribute('data-active');
+    const avatar = button.getAttribute('data-avatar');
+    const classId = button.getAttribute('data-class-id');
+
+    document.getElementById('edit-id').value = id;
+    document.getElementById('edit-firstName').value = firstName;
+    document.getElementById('edit-lastName').value = lastName;
+    document.getElementById('edit-email').value = email;
+    document.getElementById('edit-studentCode').value = studentCode;
+    document.getElementById('edit-lecturerCode').value = lecturerCode;
+    document.getElementById('edit-role').value = role;
+    document.getElementById('edit-active').checked = active === 'true';
+    document.getElementById('current-avatar').src = avatar;
+    document.getElementById("edit-oldImage").value = avatar;
+    document.getElementById('edit-classId').value = classId;
+
+
+    document.getElementById('editScoreForm').action = '/StudyScoreWebAPI/users/' + id;
 }

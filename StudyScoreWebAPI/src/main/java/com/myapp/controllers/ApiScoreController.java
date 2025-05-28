@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import org.apache.commons.io.IOUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
@@ -39,6 +40,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -90,11 +92,34 @@ public class ApiScoreController {
         this.scoreService.lockScoresByClassSubjectId(classSubjectId);
     }
 
-    @PostMapping("/scores/{id}")
+    @PatchMapping("/scores/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateScore(@PathVariable("id") int id, @RequestBody Score sc) {
-        sc.setId(id);
-        this.scoreService.addOrUpdateScore(sc);
+        Score current = this.scoreService.getScoreById(id);
+        if (!"draft".equalsIgnoreCase(current.getLockStatus())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Điểm đã khóa không thay đổi được");
+        }
+
+        if (sc.getMidtermScore() != null) {
+            current.setMidtermScore(sc.getMidtermScore());
+        }
+        if (sc.getFinalScore() != null) {
+            current.setFinalScore(sc.getFinalScore());
+        }
+        if (sc.getExtraScore1() != null) {
+            current.setExtraScore1(sc.getExtraScore1());
+        }
+        if (sc.getExtraScore2() != null) {
+            current.setExtraScore2(sc.getExtraScore2());
+        }
+        if (sc.getExtraScore3() != null) {
+            current.setExtraScore3(sc.getExtraScore3());
+        }
+        if (sc.getLockStatus() != null) {
+            current.setLockStatus(sc.getLockStatus());
+        }
+
+        this.scoreService.addOrUpdateScore(current);
     }
 
     @PostMapping("/scores/add")
@@ -108,7 +133,7 @@ public class ApiScoreController {
     public ResponseEntity<Score> getScoreByStuClassSubjectId(@PathVariable(value = "studentClassSubjectId") int studentClassSubjectId) {
         return new ResponseEntity<>(scoreService.getScoreByStuClassSubjectId(studentClassSubjectId), HttpStatus.OK);
     }
-    
+
     // Lấy danh sách điểm theo classSubjectId
     @GetMapping("/scores/classSubject/{classSubjectId}")
     public ResponseEntity<List<Score>> getScoresByClassSubjectId(@PathVariable(value = "classSubjectId") int classSubjectId) {
@@ -135,6 +160,11 @@ public class ApiScoreController {
                     continue;
                 }
 
+                Cell studentCodeCell = row.getCell(1);
+                if (studentCodeCell == null) {
+                    // Bỏ qua dòng này vì không có mã sinh viên
+                    continue;
+                }
                 String studentCode = row.getCell(1).getStringCellValue().trim();
                 Float midtermScore = getFloatFromCell(row.getCell(3));
                 Float finalScore = getFloatFromCell(row.getCell(4));

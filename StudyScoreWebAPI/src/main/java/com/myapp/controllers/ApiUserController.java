@@ -15,11 +15,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -33,19 +36,19 @@ import org.springframework.web.multipart.MultipartFile;
 public class ApiUserController {
     
     @Autowired
-    private UserService userDetailsService;
+    private UserService userService;
 
     @PostMapping(path = "/users", 
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE, 
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<User> create(@RequestParam Map<String, String> params, @RequestParam(value = "avatar") MultipartFile avatar) {
-        return new ResponseEntity<>(this.userDetailsService.addUser(params, avatar), HttpStatus.CREATED);
+        return new ResponseEntity<>(this.userService.addUser(params, avatar), HttpStatus.CREATED);
     }
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody User u) {
 
-        if (this.userDetailsService.authenticate(u.getEmail(), u.getPassword())) {
+        if (this.userService.authenticate(u.getEmail(), u.getPassword())) {
             try {
                 String token = JwtUtils.generateToken(u.getEmail());
                 return ResponseEntity.ok().body(Collections.singletonMap("token", token));
@@ -60,6 +63,11 @@ public class ApiUserController {
     @ResponseBody
     @CrossOrigin
     public ResponseEntity<User> getProfile(Principal principal) {
-        return new ResponseEntity<>(this.userDetailsService.getUserByEmail(principal.getName()), HttpStatus.OK);
+        return new ResponseEntity<>(this.userService.getUserByEmail(principal.getName()), HttpStatus.OK);
+    }
+     @DeleteMapping("/users/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void destroy(@PathVariable(value = "id") int id) {
+        this.userService.deleleUser(id);
     }
 }

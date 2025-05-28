@@ -34,6 +34,7 @@ public class SubjectRepositoryImpl implements SubjectRepository {
     private LocalSessionFactoryBean factory;
 
     // Lấy tất cả môn học với phân trang và tìm kiếm theo tên (nếu có)
+    @Override
     public List<Subject> getSubjects(Map<String, String> params) {
         Session s = this.factory.getObject().getCurrentSession();
         CriteriaBuilder b = s.getCriteriaBuilder();
@@ -86,6 +87,7 @@ public class SubjectRepositoryImpl implements SubjectRepository {
     }
 
     // Lấy môn học theo ID
+    @Override
     public Subject getSubjectById(int id) {
         Session s = this.factory.getObject().getCurrentSession();
         return s.get(Subject.class, id);

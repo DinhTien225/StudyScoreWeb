@@ -54,13 +54,16 @@ public class SubjectController {
     @GetMapping("/subjects/{id}")
     public String updateView(Model model, @PathVariable(value = "id") int id) {
         model.addAttribute("subject", this.subjectService.getSubjectById(id));
-        
+
         return "subject";
     }
-    
+
     @PostMapping("/subjects/{id}")
-    public String updateSubject(@PathVariable(value = "id") int id, @ModelAttribute Subject s) {
+    public String updateSubject(@PathVariable(value = "id") int id, @ModelAttribute Subject s, @RequestParam("oldImage") String oldImage) {
         s.setId(id);
+        if (s.getFile() == null || s.getFile().isEmpty()) {
+            s.setImageUrl(oldImage);
+        }
         subjectService.addOrUpdateSubject(s);
         return "subject";
     }
